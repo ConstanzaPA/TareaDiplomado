@@ -25,3 +25,17 @@ veces con ruptura del ojo). Por tal motivo, es importante determinar la implican
 Variables de estudio: peso promedio y mortalidad 
 Factor a analizar: mortalidad por Tenacibaculosis
 Número total de observaciones: 13
+
+```{r Preparar datos,echo=TRUE}
+#Cargar la base de datos en el objeto Tena:
+Tena <- read_excel("Tenacibaculosis.xlsx", sheet=1,na="NA")
+Tena$Centro <- as.factor(Tena$Centro)
+tidy_Tena <- select(Tena,Centro,Ingreso,Peso_g,Mortalidad, Mort_Tena)
+
+pander(summary(tidy_Tena,caption="Resumen data frame"))
+hist(tidy_Tena$Ingreso,main="Histograma Ingreso",xlab="Ingreso",col="blue")
+hist(tidy_Tena$Peso_g,main="Histograma Peso",xlab="Peso (g)",col="red")
+hist(tidy_Tena$Mortalidad,main="Histograma Mortalidad",xlab="Mortalidad",col="orange")
+hist(tidy_Tena$Mort_Tena,main="Histograma Mortalidad Tenacibaculosis",xlab="Mortalidad Tenacibaculosis",col="green")
+```
+
