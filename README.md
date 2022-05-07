@@ -1,5 +1,5 @@
 ---
-title: "Implicancia de la Tenacibaculosis en la mortalidad en Salmón Atlántico"
+title: "Implicancia de Tenacibaculosis en la mortalidad en Salmón Atlántico"
 author: "Constanza Pino Ajenjo"
 date: "7 Mayo 2022"
 ---
