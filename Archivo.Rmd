@@ -1,5 +1,5 @@
 ---
-title: "Implicancia de Tenacibaculosis en la mortalidad en Salmón Atlántico"
+title: "Implicancia de Tenacibaculosis en la mortalidad en Salmón del Atlántico"
 author: "Constanza Pino Ajenjo"
 date: "`r Sys.Date()`"
 output: html_document
@@ -19,19 +19,21 @@ library(DT)
 
 Descripción del problema a resorver: 
 La Tenacibaculosis es una infección bacteriana cuya etiología Tenacibaculum maritimus (Flexibacter maritimus) afecta principalmente al cultivo de Salmón del Atlántico. Principalmente se evidencian lesiones macroscópicas en la superficie del cuerpo; úlceras, necrosis, boca erosionada, aletas deshilachadas y cola con pudrición,
-y a veces necrosis en las branquias y los ojos (congestión choroidal y hemorragia sub-choroidal, a
-veces con ruptura del ojo). Por tal motivo, es importante determinar la implicancia de la mortalidad causada por Tenacibaculosis en agua de mar.
+y a veces necrosis en las branquias y los ojos (congestión choroidal y hemorragia sub-choroidal, a veces con ruptura del ojo). Por tal motivo, es importante determinar la implicancia de la mortalidad causada por Tenacibaculosis en agua de mar.
 
-Variables de estudio: peso promedio y mortalidad 
-Factor a analizar: mortalidad por Tenacibaculosis
+Variables de estudio: ingreso, peso promedio, mortalidad y mortalidad por Tenacibaculosis. 
+Factor a analizar: Centro
 Número total de observaciones: 13
 
 ```{r Preparar datos,echo=TRUE}
 #Cargar la base de datos en el objeto Tena:
 Tena <- read_excel("Tenacibaculosis.xlsx", sheet=1,na="NA")
+#Establecer Centro como factor:
 Tena$Centro <- as.factor(Tena$Centro)
+#Ordenar el objeto Tena:
 tidy_Tena <- select(Tena,Centro,Ingreso,Peso_g,Mortalidad, Mort_Tena)
 
+#Resumen de datos usando tabla con función pander
 pander(summary(tidy_Tena,caption="Resumen data frame"))
 hist(tidy_Tena$Ingreso,main="Histograma Ingreso",xlab="Ingreso",col="blue")
 hist(tidy_Tena$Peso_g,main="Histograma Peso",xlab="Peso (g)",col="red")
