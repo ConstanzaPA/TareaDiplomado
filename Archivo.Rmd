@@ -21,7 +21,9 @@ La Tenacibaculosis es una infección bacteriana cuya etiología Tenacibaculum ma
 y a veces necrosis en las branquias y los ojos (congestión choroidal y hemorragia sub-choroidal, a veces con ruptura del ojo). Por tal motivo, es importante determinar la implicancia de la mortalidad causada por Tenacibaculosis en agua de mar.
 
 Variables de estudio: número de ingreso de peces (Ingreso), peso promedio de los peces en gramos (Peso_g), número de mortalidad total de peces (Mortalidad) y número de mortalidad de peces causada por Tenacibaculosis (Mort_Tena). 
+
 Factor a analizar: Centros en agua de mar (Centro).
+
 Número total de observaciones: 13
 
 ```{r Preparar datos,echo=TRUE}
@@ -30,13 +32,13 @@ Tena <- read_excel("Tenacibaculosis.xlsx", sheet=1,na="NA")
 #Establecer Centro como factor:
 Tena$Centro <- as.factor(Tena$Centro)
 
-
 #Ordenar el objeto Tena:
 tidy_Tena <- select(Tena,Centro,Ingreso,Peso_g,Mortalidad, Mort_Tena)
 
 #Explorar si variables son números o carácteres:
 str(tidy_Tena)
 
+#Identificar si los datos están balanceados usando tabla de frecuencia:
 summary(tidy_Tena)
 table(tidy_Tena$Centro)
 
@@ -60,7 +62,7 @@ boxplot(tidy_Tena$Mortalidad,main="boxplot Mortalidad",ylab="Mortalidad",col ="o
 hist(tidy_Tena$Mort_Tena,main="Histograma Mortalidad Tenacibaculosis",xlab="Mortalidad Tenacibaculosis",col="green")
 boxplot(tidy_Tena$Mort_Tena,main="boxplot Mortalidad Tenacibaculosis",ylab="Mort_Tena",col ="green")
 
-#Establecer relación entre variables y el factor usando :
+#Establecer relación entre variables y el factor usando de :
 
 ```
 

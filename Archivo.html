@@ -2999,7 +2999,7 @@ mortalidad en Salmón del Atlántico</h1>
 </div>
 
 
-<p>Descripción del problema a resorver: La Tenacibaculosis es una
+<p>Descripción del problema a resolver: La Tenacibaculosis es una
 infección bacteriana cuya etiología Tenacibaculum maritimus (Flexibacter
 maritimus) afecta principalmente al cultivo de Salmón del Atlántico.
 Principalmente se evidencian lesiones macroscópicas en la superficie del
@@ -3017,20 +3017,36 @@ Tenacibaculosis (Mort_Tena). Factor a analizar: Centros en agua de mar
 Tena &lt;- read_excel(&quot;Tenacibaculosis.xlsx&quot;, sheet=1,na=&quot;NA&quot;)
 #Establecer Centro como factor:
 Tena$Centro &lt;- as.factor(Tena$Centro)
-summary(Tena$Centro)</code></pre>
-<pre><code>##  1  2  3  4  5  6  7  8  9 10 11 12 13 
-##  1  1  1  1  1  1  1  1  1  1  1  1  1</code></pre>
-<pre class="r"><code>table(Tena$Centro)</code></pre>
+
+
+#Ordenar el objeto Tena:
+tidy_Tena &lt;- select(Tena,Centro,Ingreso,Peso_g,Mortalidad, Mort_Tena)
+
+#Explorar si variables son números o carácteres:
+str(tidy_Tena)</code></pre>
+<pre><code>## tibble [13 × 5] (S3: tbl_df/tbl/data.frame)
+##  $ Centro    : Factor w/ 13 levels &quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,..: 1 2 3 4 5 6 7 8 9 10 ...
+##  $ Ingreso   : num [1:13] 934684 1136529 1540402 997107 1154452 ...
+##  $ Peso_g    : num [1:13] 236 157 245 280 280 ...
+##  $ Mortalidad: num [1:13] 269780 191931 138557 276800 428005 ...
+##  $ Mort_Tena : num [1:13] 8891 9464 1521 6152 73389 ...</code></pre>
+<pre class="r"><code>summary(tidy_Tena)</code></pre>
+<pre><code>##      Centro     Ingreso            Peso_g        Mortalidad       Mort_Tena    
+##  1      :1   Min.   : 750000   Min.   :157.4   Min.   :  9684   Min.   :    0  
+##  2      :1   1st Qu.: 997107   1st Qu.:206.2   1st Qu.:138557   1st Qu.: 1512  
+##  3      :1   Median :1076529   Median :227.9   Median :191931   Median : 6099  
+##  4      :1   Mean   :1086992   Mean   :229.7   Mean   :199905   Mean   :11748  
+##  5      :1   3rd Qu.:1136529   3rd Qu.:274.5   3rd Qu.:276800   3rd Qu.: 9464  
+##  6      :1   Max.   :1540402   Max.   :280.5   Max.   :428005   Max.   :73389  
+##  (Other):7</code></pre>
+<pre class="r"><code>table(tidy_Tena$Centro)</code></pre>
 <pre><code>## 
 ##  1  2  3  4  5  6  7  8  9 10 11 12 13 
 ##  1  1  1  1  1  1  1  1  1  1  1  1  1</code></pre>
-<pre class="r"><code>#Ordenar el objeto Tena:
-tidy_Tena &lt;- select(Tena,Centro,Ingreso,Peso_g,Mortalidad, Mort_Tena)
-
-#Generar una tabla con la base de datos de tidy_Tena con función datatable:
+<pre class="r"><code>#Generar una tabla con la base de datos de tidy_Tena con función datatable:
 DT::datatable(tidy_Tena,caption=&quot;Tabla 1: base de datos&quot;)</code></pre>
-<div id="htmlwidget-108050c99b17ab0590a7" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-108050c99b17ab0590a7">{"x":{"filter":"none","vertical":false,"caption":"<caption>Tabla 1: base de datos<\/caption>","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13"],["1","2","3","4","5","6","7","8","9","10","11","12","13"],[934684,1136529,1540402,997107,1154452,1435371,1050000,1100000,1000000,850000,1076529,1105822,750000],[236.3,157.4,245.3,280.1,280.5,161,204.6,274.5,213.7,276.7,227.9,222,206.2],[269780,191931,138557,276800,428005,306759,226035,172064,109341,176613,280701,12490,9684],[8891,9464,1521,6152,73389,13495,1,1512,6099,2472,29719,0,6]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Centro<\/th>\n      <th>Ingreso<\/th>\n      <th>Peso_g<\/th>\n      <th>Mortalidad<\/th>\n      <th>Mort_Tena<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[2,3,4,5]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-baa9da904e1024daf9e1" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-baa9da904e1024daf9e1">{"x":{"filter":"none","vertical":false,"caption":"<caption>Tabla 1: base de datos<\/caption>","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13"],["1","2","3","4","5","6","7","8","9","10","11","12","13"],[934684,1136529,1540402,997107,1154452,1435371,1050000,1100000,1000000,850000,1076529,1105822,750000],[236.3,157.4,245.3,280.1,280.5,161,204.6,274.5,213.7,276.7,227.9,222,206.2],[269780,191931,138557,276800,428005,306759,226035,172064,109341,176613,280701,12490,9684],[8891,9464,1521,6152,73389,13495,1,1512,6099,2472,29719,0,6]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Centro<\/th>\n      <th>Ingreso<\/th>\n      <th>Peso_g<\/th>\n      <th>Mortalidad<\/th>\n      <th>Mort_Tena<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[2,3,4,5]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 <pre class="r"><code>#Resumen de estadística descriptiva con función pander:
 pander(summary(tidy_Tena,caption=&quot;Resumen data frame&quot;))</code></pre>
 <table>
