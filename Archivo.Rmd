@@ -21,7 +21,7 @@ Descripción del problema a resorver:
 La Tenacibaculosis es una infección bacteriana cuya etiología Tenacibaculum maritimus (Flexibacter maritimus) afecta principalmente al cultivo de Salmón del Atlántico. Principalmente se evidencian lesiones macroscópicas en la superficie del cuerpo; úlceras, necrosis, boca erosionada, aletas deshilachadas y cola con pudrición,
 y a veces necrosis en las branquias y los ojos (congestión choroidal y hemorragia sub-choroidal, a veces con ruptura del ojo). Por tal motivo, es importante determinar la implicancia de la mortalidad causada por Tenacibaculosis en agua de mar.
 
-Variables de estudio: ingreso, peso promedio, mortalidad y mortalidad por Tenacibaculosis. 
+Variables de estudio: número de ingreso de peces (Ingreso), peso promedio de los peces en gramos (Peso_g), número de mortalidad total de peces (Mortalidad) y número de mortalidad de peces causada por Tenacibaculosis (Mort_Tena). 
 Factor a analizar: Centro
 Número total de observaciones: 13
 
@@ -39,10 +39,18 @@ DT::datatable(tidy_Tena,caption="Tabla 1: base de datos")
 #Resumen de estadística descriptiva con función pander:
 pander(summary(tidy_Tena,caption="Resumen data frame"))
 
-#
+#Observar el comportamiento de las variables en estudio usando histogramas y boxplot:
+#1. Variable Ingreso:
 hist(tidy_Tena$Ingreso,main="Histograma Ingreso",xlab="Ingreso",col="blue")
-hist(tidy_Tena$Peso_g,main="Histograma Peso",xlab="Peso (g)",col="red")
+boxplot(tidy_Tena$Ingreso,main="boxplot Ingreso",ylab="Ingreso",col = "blue")
+#2. Variable Peso:
+hist(tidy_Tena$Peso_g,main="Histograma Peso",xlab="Peso_g",col="red")
+boxplot(tidy_Tena$Peso_g,main="boxplot Peso",ylab="Peso_g",col ="red")
+#3. Variable Mortalidad:
 hist(tidy_Tena$Mortalidad,main="Histograma Mortalidad",xlab="Mortalidad",col="orange")
+boxplot(tidy_Tena$Mortalidad,main="boxplot Mortalidad",ylab="Mortalidad",col ="orange")
+#4. Variable Mort_Tena:
 hist(tidy_Tena$Mort_Tena,main="Histograma Mortalidad Tenacibaculosis",xlab="Mortalidad Tenacibaculosis",col="green")
+boxplot(tidy_Tena$Mort_Tena,main="boxplot Mortalidad Tenacibaculosis",ylab="Mort_Tena",col ="green")
 ```
 
