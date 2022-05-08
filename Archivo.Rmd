@@ -33,11 +33,13 @@ Tena$Centro <- as.factor(Tena$Centro)
 #Ordenar el objeto Tena:
 tidy_Tena <- select(Tena,Centro,Ingreso,Peso_g,Mortalidad, Mort_Tena)
 
-# Tabla de datos en objeto Tena con función datatable:
+#Generar una tabla con la base de datos de tidy_Tena con función datatable:
 DT::datatable(tidy_Tena,caption="Tabla 1: base de datos")
 
-#Resumen de datos usando tabla con función pander
+#Resumen de estadística descriptiva con función pander:
 pander(summary(tidy_Tena,caption="Resumen data frame"))
+
+#
 hist(tidy_Tena$Ingreso,main="Histograma Ingreso",xlab="Ingreso",col="blue")
 hist(tidy_Tena$Peso_g,main="Histograma Peso",xlab="Peso (g)",col="red")
 hist(tidy_Tena$Mortalidad,main="Histograma Mortalidad",xlab="Mortalidad",col="orange")
