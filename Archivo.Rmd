@@ -29,11 +29,16 @@ Número total de observaciones: 13
 Tena <- read_excel("Tenacibaculosis.xlsx", sheet=1,na="NA")
 #Establecer Centro como factor:
 Tena$Centro <- as.factor(Tena$Centro)
-summary(Tena$Centro)
-table(Tena$Centro)
+
 
 #Ordenar el objeto Tena:
 tidy_Tena <- select(Tena,Centro,Ingreso,Peso_g,Mortalidad, Mort_Tena)
+
+#Explorar si variables son números o carácteres:
+str(tidy_Tena)
+
+summary(tidy_Tena)
+table(tidy_Tena$Centro)
 
 #Generar una tabla con la base de datos de tidy_Tena con función datatable:
 DT::datatable(tidy_Tena,caption="Tabla 1: base de datos")
