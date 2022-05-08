@@ -29,6 +29,9 @@ Número total de observaciones: 13
 Tena <- read_excel("Tenacibaculosis.xlsx", sheet=1,na="NA")
 #Establecer Centro como factor:
 Tena$Centro <- as.factor(Tena$Centro)
+summary(Tena$Centro)
+table(Tena$Centro)
+
 #Ordenar el objeto Tena:
 tidy_Tena <- select(Tena,Centro,Ingreso,Peso_g,Mortalidad, Mort_Tena)
 
@@ -51,5 +54,8 @@ boxplot(tidy_Tena$Mortalidad,main="boxplot Mortalidad",ylab="Mortalidad",col ="o
 #4. Variable Mort_Tena:
 hist(tidy_Tena$Mort_Tena,main="Histograma Mortalidad Tenacibaculosis",xlab="Mortalidad Tenacibaculosis",col="green")
 boxplot(tidy_Tena$Mort_Tena,main="boxplot Mortalidad Tenacibaculosis",ylab="Mort_Tena",col ="green")
+
+#Establecer relación entre variables y el factor usando :
+
 ```
 
