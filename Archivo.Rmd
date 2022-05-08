@@ -14,7 +14,6 @@ library(tidyverse)
 library(kableExtra)
 library(pander)
 library(DT)
-
 ```
 
 Descripción del problema a resorver: 
