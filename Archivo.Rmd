@@ -29,14 +29,18 @@ Número total de observaciones: 13
 ```{r Preparar datos,echo=TRUE}
 #Cargar la base de datos en el objeto Tena:
 Tena <- read_excel("Tenacibaculosis.xlsx", sheet=1,na="NA")
-#Establecer Centro como factor:
+head(Tena)
+
+#Explorar si las variables son números o carácteres:
+str(Tena)
+
+#Establecer Centro como factor y visualizar que la variable está transformada en factor:
 Tena$Centro <- as.factor(Tena$Centro)
+summary(Tena)
 
-#Ordenar el objeto Tena:
+#Ordenar Tena creando un objeto tidy_Tena:
 tidy_Tena <- select(Tena,Centro,Ingreso,Peso_g,Mortalidad, Mort_Tena)
-
-#Explorar si variables son números o carácteres:
-str(tidy_Tena)
+head(tidy_Tena)
 
 #Identificar si los datos están balanceados usando tabla de frecuencia:
 summary(tidy_Tena)
@@ -62,7 +66,8 @@ boxplot(tidy_Tena$Mortalidad,main="boxplot Mortalidad",ylab="Mortalidad",col ="o
 hist(tidy_Tena$Mort_Tena,main="Histograma Mortalidad Tenacibaculosis",xlab="Mortalidad Tenacibaculosis",col="green")
 boxplot(tidy_Tena$Mort_Tena,main="boxplot Mortalidad Tenacibaculosis",ylab="Mort_Tena",col ="green")
 
-#Establecer relación entre variables y el factor usando de :
+#Establecer relación entre variables y el factor usando gráfico de interacción:
+interaction.plot(tidy_Tena$Ingreso, tidy_Tena$Peso_g, tidy_Tena$Mortalidad, tidy_Tena$Mort_Tena, fun=mean, main="Gráfico de interacción", arg=NULL)
 
 ```
 
