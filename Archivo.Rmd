@@ -44,13 +44,14 @@ summary(tidy_Tena)
 table(tidy_Tena$Centro)
 
 #Generar una tabla con la base de datos de tidy_Tena con función datatable:
-DT::datatable(tidy_Tena,caption="Tabla 1: base de datos")
+DT::datatable(tidy_Tena,caption="Tabla 1. Número de ingreso, peso promedio y número de mortalidad por Centro")
 
 #Resumen de estadística descriptiva con función pander:
 pander(summary(tidy_Tena,caption="Resumen data frame"))
 
 #Observar el comportamiento de las variables en estudio usando histogramas y boxplot:
 #1. Variable Ingreso:
+par(mfrow=c(1, 2))
 hist(tidy_Tena$Ingreso,main="Histograma Ingreso",xlab="Ingreso",col="blue")
 boxplot(tidy_Tena$Ingreso,main="boxplot Ingreso",ylab="Ingreso",col = "blue")
 #2. Variable Peso:
@@ -63,8 +64,8 @@ boxplot(tidy_Tena$Mortalidad,main="boxplot Mortalidad",ylab="Mortalidad",col ="o
 hist(tidy_Tena$Mort_Tena,main="Histograma Mortalidad Tenacibaculosis",xlab="Mortalidad Tenacibaculosis",col="green")
 boxplot(tidy_Tena$Mort_Tena,main="boxplot Mortalidad Tenacibaculosis",ylab="Mort_Tena",col ="green")
 
-#Establecer relación entre variables y el factor usando gráfico de interacción:
-
+#Establecer relación entre variables cuantitativas y factores usando gráficas de correlación, boxplot, interacción o de tamaño de los efectos:
+ggplot(data=tidy_Tena,mapping=aes(x="Centro",y="Ingreso"),type="b")
 
 ```
 
