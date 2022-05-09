@@ -65,7 +65,9 @@ hist(tidy_Tena$Mort_Tena,main="Histograma Mortalidad Tenacibaculosis",xlab="Mort
 boxplot(tidy_Tena$Mort_Tena,main="boxplot Mortalidad Tenacibaculosis",ylab="Mort_Tena",col ="green")
 
 #Establecer relación entre variables cuantitativas y factores usando gráficas de correlación, boxplot, interacción o de tamaño de los efectos:
-ggplot(data=tidy_Tena,mapping=aes(x="Centro",y="Ingreso"),type="b")
+
+ggplot(data=tidy_Tena, mapping=aes(x="Centro",y="Ingreso"))
+
 
 ```
 
