@@ -22,9 +22,9 @@ y a veces necrosis en las branquias y los ojos (congestión choroidal y hemorrag
 
 Variables de estudio: número de ingreso de peces (Ingreso), peso promedio de los peces en gramos (Peso_g), número de mortalidad total de peces (Mortalidad) y número de mortalidad de peces causada por Tenacibaculosis (Mort_Tena). 
 
-Factor a analizar: Centros en agua de mar (Centro).
+Factor a analizar: Centros en agua de mar (Centro) y Alimento (Alimento).
 
-Número total de observaciones: 13
+Número total de observaciones: 24
 
 ```{r Preparar datos,echo=TRUE}
 #Cargar la base de datos en el objeto Tena:
@@ -32,7 +32,7 @@ Tena <- read_excel("Tenacibaculosis.xlsx", sheet=1,na="NA")
 head(Tena)
 
 #Ordenar Tena creando un objeto tidy_Tena con las variables de interés:
-tidy_Tena <- select(Tena,Centro,Ingreso,Peso_g,Mortalidad, Mort_Tena)
+tidy_Tena <- select(Tena,Centro,Alimento,Ingreso,Peso_g,Mortalidad, Mort_Tena)
 head(tidy_Tena)
 
 #Explorar si las variables son números o carácteres:
@@ -40,8 +40,9 @@ str(tidy_Tena)
 
 #Transformar Centro a factor usando as.factor y visualizar que Centro esté transformado adecuadamente a factor y los datos están balanceados:
 tidy_Tena$Centro <- as.factor(tidy_Tena$Centro)
+tidy_Tena$Alimento <- as.factor(tidy_Tena$Alimento)
 summary(tidy_Tena)
-table(tidy_Tena$Centro)
+table(tidy_Tena$Centro,tidy_Tena$Alimento)
 
 #Generar una tabla con la base de datos de tidy_Tena con función datatable:
 DT::datatable(tidy_Tena,caption="Tabla 1. Número de ingreso, peso promedio y número de mortalidad por Centro")
@@ -50,24 +51,55 @@ DT::datatable(tidy_Tena,caption="Tabla 1. Número de ingreso, peso promedio y n�
 pander(summary(tidy_Tena,caption="Resumen data frame"))
 
 #Observar el comportamiento de las variables en estudio usando histogramas y boxplot:
-#1. Variable Ingreso:
+#1. Variable Alimento:
 par(mfrow=c(1, 2))
-hist(tidy_Tena$Ingreso,main="Histograma Ingreso",xlab="Ingreso",col="blue")
-boxplot(tidy_Tena$Ingreso,main="boxplot Ingreso",ylab="Ingreso",col = "blue")
-#2. Variable Peso:
-hist(tidy_Tena$Peso_g,main="Histograma Peso",xlab="Peso_g",col="red")
-boxplot(tidy_Tena$Peso_g,main="boxplot Peso",ylab="Peso_g",col ="red")
-#3. Variable Mortalidad:
-hist(tidy_Tena$Mortalidad,main="Histograma Mortalidad",xlab="Mortalidad",col="orange")
-boxplot(tidy_Tena$Mortalidad,main="boxplot Mortalidad",ylab="Mortalidad",col ="orange")
-#4. Variable Mort_Tena:
-hist(tidy_Tena$Mort_Tena,main="Histograma Mortalidad Tenacibaculosis",xlab="Mortalidad Tenacibaculosis",col="green")
-boxplot(tidy_Tena$Mort_Tena,main="boxplot Mortalidad Tenacibaculosis",ylab="Mort_Tena",col ="green")
+boxplot(tidy_Tena$Alimento,main="Boxplot de tipo de Alimento",ylab="Alimento",col = "white")
+#2. Variable Ingreso:
+hist(tidy_Tena$Ingreso,main="Histograma de número de Ingreso",xlab="Ingreso",col="blue")
+boxplot(tidy_Tena$Ingreso,main="Boxplot de número de Ingreso",ylab="Ingreso",col = "blue")
+#3. Variable Peso:
+hist(tidy_Tena$Peso_g,main="Histograma de Peso promedio (g)",xlab="Peso_g",col="red")
+boxplot(tidy_Tena$Peso_g,main="Boxplot de Peso promedio (g)",ylab="Peso_g",col ="red")
+#4. Variable Mortalidad:
+hist(tidy_Tena$Mortalidad,main="Histograma de número de Mortalidad total",xlab="Mortalidad",col="orange")
+boxplot(tidy_Tena$Mortalidad,main="Boxplot de número de Mortalidad total",ylab="Mortalidad",col ="orange")
+#5. Variable Mort_Tena:
+hist(tidy_Tena$Mort_Tena,main="Histograma de número de Mortalidad por Tenacibaculosis",xlab="Mortalidad Tenacibaculosis",col="green")
+boxplot(tidy_Tena$Mort_Tena,main="Boxplot de número de Mortalidad por Tenacibaculosis",ylab="Mort_Tena",col ="green")
 
 #Establecer relación entre variables cuantitativas y factores usando gráficas de correlación, boxplot, interacción o de tamaño de los efectos:
 
-ggplot(data=tidy_Tena, mapping=aes(x="Centro",y="Ingreso"))
+ggplot(data=tidy_Tena, mapping=aes(x="Centro",y="Mort_Tena"))+geom_boxplot()
 
 
+```
+
+
+
+```{r Gráficos Ingreso, echo=TRUE}
+
+hist_ing <- ggplot(tidy_Tena,aes(Ingreso))+
+  geom_histogram(bins=9)
+hist_ing
+
+```
+
+```{r Gráficos Peso promedio ,echo=TRUE}
+
+hist_peso <- ggplot(tidy_Tena,aes(Peso_g))+
+  geom_histogram(bins=12)
+hist_peso
+
+```
+```{r Gráficos Mortalidad total,echo=TRUE}
+hist_mort <- ggplot(tidy_Tena,aes(Mortalidad))+
+  geom_histogram(bins=12)
+hist_mort
+
+```
+```{r Gráficos Mortalidad Tenacibaculosis,echo=TRUE}
+hist_Tena <- ggplot(tidy_Tena,aes(Mort_Tena))+
+  geom_histogram(bins=10)
+hist_Tena
 ```
 
