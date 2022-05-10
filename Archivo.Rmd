@@ -19,7 +19,7 @@ library(DT)
 **Descripción del problema a resolver:** 
 La Tenacibaculosis es una infección bacteriana cuya etiología Tenacibaculum maritimus (Flexibacter maritimus) afecta principalmente al cultivo de Salmón del Atlántico. Principalmente se evidencian lesiones macroscópicas en la superficie del cuerpo; úlceras, necrosis, boca erosionada, aletas deshilachadas y cola con pudrición, y a veces necrosis en las branquias y los ojos (congestión choroidal y hemorragia sub-choroidal, a veces con ruptura del ojo). Por tal motivo, es importante determinar la implicancia de la mortalidad causada por Tenacibaculosis en agua de mar.
 
-**Variables de estudio:** peso promedio de los peces en gramos (Peso_g), número de mortalidad total de peces (Mortalidad) y número de mortalidad de peces causada por Tenacibaculosis (Mort_Tena). 
+**Variables de estudio:** peso promedio de los peces cosechados medido en kilogramos (Peso_cosecha), número de mortalidad total de peces (Mortalidad) y número de mortalidad de peces causada por Tenacibaculosis (Mort_Tena). 
 
 **Factor a analizar:** Centros en agua de mar (Centro) y tipo de alimento (Alimento).
 
@@ -32,7 +32,7 @@ Tena <- read_excel("Tenacibaculosis.xlsx", sheet=1,na="NA")
 head(Tena)
 
 #Ordenar Tena creando un objeto tidy_Tena con las variables de interés:
-tidy_Tena <- select(Tena,Centro,Alimento,Ingreso,Peso_g,Mortalidad,Mort_Tena)
+tidy_Tena <- select(Tena,Centro,Alimento,Ingreso,Peso_cosecha,Mortalidad,Mort_Tena)
 head(tidy_Tena)
 
 #Explorar si las variables son números o carácteres:
@@ -45,10 +45,10 @@ summary(tidy_Tena)
 table(tidy_Tena$Centro,tidy_Tena$Alimento)
 
 #Generar una tabla con la base de datos de tidy_Tena con función datatable:
-DT::datatable(tidy_Tena,caption="Tabla 1. Número de ingreso, peso promedio y número de mortalidad por Centro")
+DT::datatable(tidy_Tena,caption="Tabla 1. Número de ingreso, peso cosecha y número de mortalidad por Centro")
 
 #Resumen de estadística descriptiva con función pander:
-pander(summary(tidy_Tena,caption="Resumen data frame"))
+pander(summary(tidy_Tena,caption="Tabla 2. Resumen data frame"))
 
 ```
 
@@ -67,15 +67,15 @@ blot_ing <- ggplot(tidy_Tena,aes(y=Ingreso,x=Alimento))+
 blot_ing
 ```
 
-```{r Histograma y boxplot Peso promedio ,echo=TRUE}
+```{r Histograma y boxplot Peso promedio cosecha ,echo=TRUE}
 
-hist_peso <- ggplot(tidy_Tena,aes(Peso_g))+
+hist_peso <- ggplot(tidy_Tena,aes(Peso_cosecha))+
   geom_histogram(fill="red",bins=12)+
-  labs(title = "Figura 3. Histograma de peso promedio de los peces")
+  labs(title = "Figura 3. Histograma de peso promedio cosecha de los peces")
 hist_peso
-blot_peso <- ggplot(tidy_Tena,aes(y=Peso_g,x=Alimento))+
+blot_peso <- ggplot(tidy_Tena,aes(y=Peso_cosecha,x=Alimento))+
   geom_boxplot(fill="red",outlier.colour = "red")+
-  labs(title="Figura 4. Boxplot de peso promedio por tipo de alimento",y="Peso promedio (g)",x="Tipo de Alimento")
+  labs(title="Figura 4. Boxplot de peso promedio cosecha por tipo de alimento",y="Peso promedio cosecha",x="Tipo de Alimento")
 blot_peso
 ```
 ```{r Histograma y boxplot Mortalidad total,echo=TRUE}
@@ -102,15 +102,16 @@ blot_Tena
 ```
 
 ```{r Gráficos interacción 1,echo=TRUE}
-interaction.plot(tidy_Tena$Centro,tidy_Tena$Alimento, tidy_Tena$Peso_g,trace.label="Alimento",fun=mean,main="Figura 9. Interacción entre peso promedio y factores", xlab="Centro",ylab="Peso promedio (g)",type="b", col= c("black", "red"),pch=c(19,17))
+#Establecer relación entre variables cuantitativas y factores usando gráficas de correlación, boxplot, interacción o de tamaño de los efectos:
+
+interaction.plot(tidy_Tena$Centro,tidy_Tena$Alimento, tidy_Tena$Peso_cosecha,trace.label="Alimento",fun=mean,main="Figura 9. Interacción entre peso promedio cosecha y factores", xlab="Centro",ylab="Peso promedio cosecha (Kg)",type="b", col= c("black", "red"),pch=c(19,17))
  
-plot.design(tidy_Tena$Peso_g~tidy_Tena$Centro*tidy_Tena$Alimento,main="Figura 10. Gráfico de interacción",xlab="Factores", ylab="Peso promedio (g)")
+plot.design(tidy_Tena$Peso_cosecha~tidy_Tena$Centro*tidy_Tena$Alimento,main="Figura 10. Gráfico de interacción",xlab="Factores", ylab="Peso promedio cosecha")
 ```
 
 
 
 ```{r Gráficos interacción 2,echo=TRUE}
-#Establecer relación entre variables cuantitativas y factores usando gráficas de correlación, boxplot, interacción o de tamaño de los efectos:
 
 interaction.plot(tidy_Tena$Centro,tidy_Tena$Alimento, tidy_Tena$Mortalidad,trace.label="Alimento",fun=mean,main="Figura 11. Interacción entre mortalidad total y factores", xlab="Centro",ylab="Mortalidad",type="b", col= c("black", "red"),pch=c(19,17))
  
