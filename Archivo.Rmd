@@ -57,7 +57,7 @@ pander(summary(tidy_Tena,caption="Resumen data frame"))
 ```{r Gráficos Ingreso, echo=TRUE}
 #Observar el comportamiento de las variables en estudio usando histogramas y boxplot:
 
-par(mfrow=c(1, 2))
+
 hist_ing <- ggplot(tidy_Tena,aes(Ingreso))+
   geom_histogram(fill="blue",bins=10)+
   labs(title = "Figura 1. Histograma de número de Ingreso de peces")
@@ -70,7 +70,7 @@ blot_ing
 ```
 
 ```{r Gráficos Peso promedio ,echo=TRUE}
-par(mfrow=c(1, 2))
+
 hist_peso <- ggplot(tidy_Tena,aes(Peso_g))+
   geom_histogram(fill="red",bins=12)+
   labs(title = "Figura 3. Histograma de peso promedio de los peces")
@@ -81,7 +81,7 @@ blot_peso <- ggplot(tidy_Tena,aes(y=Peso_g,x=Alimento))+
 blot_peso
 ```
 ```{r Gráficos Mortalidad total,echo=TRUE}
-par(mfrow=c(1, 2))
+
 hist_mort <- ggplot(tidy_Tena,aes(Mortalidad))+
   geom_histogram(fill="orange",bins=12)+
   labs(title = "Figura 5. Histograma de número de mortalidad total")
@@ -92,7 +92,7 @@ blot_mort <- ggplot(tidy_Tena,aes(y=Mortalidad,x=Alimento))+
 blot_mort
 ```
 ```{r Gráficos Mortalidad Tenacibaculosis,echo=TRUE}
-par(mfrow=c(1, 2))
+
 hist_Tena <- ggplot(tidy_Tena,aes(Mort_Tena))+
   geom_histogram(fill="green",bins=10)+
   labs(title = "Figura 7. Histograma de número de Mortalidad por Tenacibaculosis")
@@ -103,9 +103,32 @@ blot_Tena <- ggplot(tidy_Tena,aes(y=Mort_Tena,x=Alimento))+
 blot_Tena
 ```
 
-```{r Gráficos interacción,echo=TRUE}
+```{r Gráficos interacción 1,echo=TRUE}
+interaction.plot(tidy_Tena$Centro,tidy_Tena$Alimento, tidy_Tena$Peso_g,trace.label="Alimento",fun=mean,main="Figura 9. Gráfico de interacción Peso promedio", xlab="Centro",ylab="Peso promedio (g)",type="b", col= c("black", "red"),pch=c(19,17))
+ 
+plot.design(tidy_Tena$Peso_g~tidy_Tena$Centro*tidy_Tena$Alimento,main="Figura 10. Gráfico de interacción",xlab="Factores", ylab="Peso promedio (g)")
+
+
+```
+
+
+
+```{r Gráficos interacción 2,echo=TRUE}
 #Establecer relación entre variables cuantitativas y factores usando gráficas de correlación, boxplot, interacción o de tamaño de los efectos:
 
-ggplot(data=tidy_Tena, mapping=aes(x="Centro",y="Mort_Tena"))+geom_boxplot()
+interaction.plot(tidy_Tena$Centro,tidy_Tena$Alimento, tidy_Tena$Mortalidad,trace.label="Alimento",fun=mean,main="Figura 11. Gráfico de interacción Mortalidad total", xlab="Centro",ylab="Mortalidad",type="b", col= c("black", "red"),pch=c(19,17))
+ 
+plot.design(tidy_Tena$Mortalidad~tidy_Tena$Centro*tidy_Tena$Alimento,main="Figura 12. Gráfico de interacción",xlab="Factores", ylab="Mortalidad")
 ```
+
+
+
+
+```{r Gráficos interacción 3,echo=TRUE}
+interaction.plot(tidy_Tena$Centro,tidy_Tena$Alimento, tidy_Tena$Mort_Tena,trace.label="Alimento",fun=mean,main="Figura 13. Gráfico de interacción Mortalidad Tenacibaculosis", xlab="Centro",ylab="Mortalidad Tenacibaculosis",type="b", col= c("black", "red"),pch=c(19,17))
+ 
+plot.design(tidy_Tena$Mort_Tena~tidy_Tena$Centro*tidy_Tena$Alimento,main="Figura 14. Gráfico de interacción de factores",xlab="Factores", ylab="Mortalidad Tenacibaculosis")
+```
+
+
 
