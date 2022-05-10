@@ -20,11 +20,12 @@ Descripción del problema a resolver:
 La Tenacibaculosis es una infección bacteriana cuya etiología Tenacibaculum maritimus (Flexibacter maritimus) afecta principalmente al cultivo de Salmón del Atlántico. Principalmente se evidencian lesiones macroscópicas en la superficie del cuerpo; úlceras, necrosis, boca erosionada, aletas deshilachadas y cola con pudrición,
 y a veces necrosis en las branquias y los ojos (congestión choroidal y hemorragia sub-choroidal, a veces con ruptura del ojo). Por tal motivo, es importante determinar la implicancia de la mortalidad causada por Tenacibaculosis en agua de mar.
 
-Variables de estudio: número de ingreso de peces (Ingreso), peso promedio de los peces en gramos (Peso_g), número de mortalidad total de peces (Mortalidad) y número de mortalidad de peces causada por Tenacibaculosis (Mort_Tena). 
+Variables de estudio: peso promedio de los peces en gramos (Peso_g), número de mortalidad total de peces (Mortalidad) y número de mortalidad de peces causada por Tenacibaculosis (Mort_Tena). 
 
 Factor a analizar: Centros en agua de mar (Centro) y Alimento (Alimento).
 
 Número total de observaciones: 24
+
 
 ```{r Preparar datos,echo=TRUE}
 #Cargar la base de datos en el objeto Tena:
@@ -32,7 +33,7 @@ Tena <- read_excel("Tenacibaculosis.xlsx", sheet=1,na="NA")
 head(Tena)
 
 #Ordenar Tena creando un objeto tidy_Tena con las variables de interés:
-tidy_Tena <- select(Tena,Centro,Alimento,Ingreso,Peso_g,Mortalidad, Mort_Tena)
+tidy_Tena <- select(Tena,Centro,Alimento,Ingreso,Peso_g,Mortalidad,Mort_Tena)
 head(tidy_Tena)
 
 #Explorar si las variables son números o carácteres:
@@ -54,9 +55,8 @@ pander(summary(tidy_Tena,caption="Resumen data frame"))
 
 
 
-```{r Gráficos Ingreso, echo=TRUE}
+```{r Histograma y boxplot Ingreso, echo=TRUE}
 #Observar el comportamiento de las variables en estudio usando histogramas y boxplot:
-
 
 hist_ing <- ggplot(tidy_Tena,aes(Ingreso))+
   geom_histogram(fill="blue",bins=10)+
@@ -66,10 +66,9 @@ blot_ing <- ggplot(tidy_Tena,aes(y=Ingreso,x=Alimento))+
   geom_boxplot(fill="blue",outlier.colour = "red")+
   labs(title="Figura 2. Boxplot de número ingreso peces por tipo de alimento",y="Ingreso",x="Tipo de Alimento")
 blot_ing
-
 ```
 
-```{r Gráficos Peso promedio ,echo=TRUE}
+```{r Histograma y boxplot Peso promedio ,echo=TRUE}
 
 hist_peso <- ggplot(tidy_Tena,aes(Peso_g))+
   geom_histogram(fill="red",bins=12)+
@@ -80,7 +79,7 @@ blot_peso <- ggplot(tidy_Tena,aes(y=Peso_g,x=Alimento))+
   labs(title="Figura 4. Boxplot de peso promedio por tipo de alimento",y="Peso promedio (g)",x="Tipo de Alimento")
 blot_peso
 ```
-```{r Gráficos Mortalidad total,echo=TRUE}
+```{r Histograma y boxplot Mortalidad total,echo=TRUE}
 
 hist_mort <- ggplot(tidy_Tena,aes(Mortalidad))+
   geom_histogram(fill="orange",bins=12)+
@@ -91,7 +90,7 @@ blot_mort <- ggplot(tidy_Tena,aes(y=Mortalidad,x=Alimento))+
   labs(title="Figura 6. Boxplot de mortalidad total por tipo de alimento",y="Mortalidad total",x="Tipo de Alimento")
 blot_mort
 ```
-```{r Gráficos Mortalidad Tenacibaculosis,echo=TRUE}
+```{r Histograma y boxplot Mortalidad Tenacibaculosis,echo=TRUE}
 
 hist_Tena <- ggplot(tidy_Tena,aes(Mort_Tena))+
   geom_histogram(fill="green",bins=10)+
@@ -107,8 +106,6 @@ blot_Tena
 interaction.plot(tidy_Tena$Centro,tidy_Tena$Alimento, tidy_Tena$Peso_g,trace.label="Alimento",fun=mean,main="Figura 9. Gráfico de interacción Peso promedio", xlab="Centro",ylab="Peso promedio (g)",type="b", col= c("black", "red"),pch=c(19,17))
  
 plot.design(tidy_Tena$Peso_g~tidy_Tena$Centro*tidy_Tena$Alimento,main="Figura 10. Gráfico de interacción",xlab="Factores", ylab="Peso promedio (g)")
-
-
 ```
 
 
