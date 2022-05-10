@@ -50,56 +50,62 @@ DT::datatable(tidy_Tena,caption="Tabla 1. Número de ingreso, peso promedio y n�
 #Resumen de estadística descriptiva con función pander:
 pander(summary(tidy_Tena,caption="Resumen data frame"))
 
-#Observar el comportamiento de las variables en estudio usando histogramas y boxplot:
-#1. Variable Alimento:
-par(mfrow=c(1, 2))
-boxplot(tidy_Tena$Alimento,main="Boxplot de tipo de Alimento",ylab="Alimento",col = "white")
-#2. Variable Ingreso:
-hist(tidy_Tena$Ingreso,main="Histograma de número de Ingreso",xlab="Ingreso",col="blue")
-boxplot(tidy_Tena$Ingreso,main="Boxplot de número de Ingreso",ylab="Ingreso",col = "blue")
-#3. Variable Peso:
-hist(tidy_Tena$Peso_g,main="Histograma de Peso promedio (g)",xlab="Peso_g",col="red")
-boxplot(tidy_Tena$Peso_g,main="Boxplot de Peso promedio (g)",ylab="Peso_g",col ="red")
-#4. Variable Mortalidad:
-hist(tidy_Tena$Mortalidad,main="Histograma de número de Mortalidad total",xlab="Mortalidad",col="orange")
-boxplot(tidy_Tena$Mortalidad,main="Boxplot de número de Mortalidad total",ylab="Mortalidad",col ="orange")
-#5. Variable Mort_Tena:
-hist(tidy_Tena$Mort_Tena,main="Histograma de número de Mortalidad por Tenacibaculosis",xlab="Mortalidad Tenacibaculosis",col="green")
-boxplot(tidy_Tena$Mort_Tena,main="Boxplot de número de Mortalidad por Tenacibaculosis",ylab="Mort_Tena",col ="green")
-
-#Establecer relación entre variables cuantitativas y factores usando gráficas de correlación, boxplot, interacción o de tamaño de los efectos:
-
-ggplot(data=tidy_Tena, mapping=aes(x="Centro",y="Mort_Tena"))+geom_boxplot()
-
-
 ```
 
 
 
 ```{r Gráficos Ingreso, echo=TRUE}
+#Observar el comportamiento de las variables en estudio usando histogramas y boxplot:
 
+par(mfrow=c(1, 2))
 hist_ing <- ggplot(tidy_Tena,aes(Ingreso))+
-  geom_histogram(bins=9)
+  geom_histogram(fill="blue",bins=10)+
+  labs(title = "Figura 1. Histograma de número de Ingreso de peces")
 hist_ing
+blot_ing <- ggplot(tidy_Tena,aes(y=Ingreso,x=Alimento))+
+  geom_boxplot(fill="blue",outlier.colour = "red")+
+  labs(title="Figura 2. Boxplot de número ingreso peces por tipo de alimento",y="Ingreso",x="Tipo de Alimento")
+blot_ing
 
 ```
 
 ```{r Gráficos Peso promedio ,echo=TRUE}
-
+par(mfrow=c(1, 2))
 hist_peso <- ggplot(tidy_Tena,aes(Peso_g))+
-  geom_histogram(bins=12)
+  geom_histogram(fill="red",bins=12)+
+  labs(title = "Figura 3. Histograma de peso promedio de los peces")
 hist_peso
-
+blot_peso <- ggplot(tidy_Tena,aes(y=Peso_g,x=Alimento))+
+  geom_boxplot(fill="red",outlier.colour = "red")+
+  labs(title="Figura 4. Boxplot de peso promedio por tipo de alimento",y="Peso promedio (g)",x="Tipo de Alimento")
+blot_peso
 ```
 ```{r Gráficos Mortalidad total,echo=TRUE}
+par(mfrow=c(1, 2))
 hist_mort <- ggplot(tidy_Tena,aes(Mortalidad))+
-  geom_histogram(bins=12)
+  geom_histogram(fill="orange",bins=12)+
+  labs(title = "Figura 5. Histograma de número de mortalidad total")
 hist_mort
-
+blot_mort <- ggplot(tidy_Tena,aes(y=Mortalidad,x=Alimento))+
+  geom_boxplot(fill="orange",outlier.colour = "red")+
+  labs(title="Figura 6. Boxplot de mortalidad total por tipo de alimento",y="Mortalidad total",x="Tipo de Alimento")
+blot_mort
 ```
 ```{r Gráficos Mortalidad Tenacibaculosis,echo=TRUE}
+par(mfrow=c(1, 2))
 hist_Tena <- ggplot(tidy_Tena,aes(Mort_Tena))+
-  geom_histogram(bins=10)
+  geom_histogram(fill="green",bins=10)+
+  labs(title = "Figura 7. Histograma de número de Mortalidad por Tenacibaculosis")
 hist_Tena
+blot_Tena <- ggplot(tidy_Tena,aes(y=Mort_Tena,x=Alimento))+
+  geom_boxplot(fill="green",outlier.colour = "red")+
+  labs(title="Figura 8. Boxplot de mortalidad por Tenacibaculosis según tipo de alimento",y="Mortalidad por Tenacibaculosis",x="Tipo de Alimento")
+blot_Tena
+```
+
+```{r Gráficos interacción,echo=TRUE}
+#Establecer relación entre variables cuantitativas y factores usando gráficas de correlación, boxplot, interacción o de tamaño de los efectos:
+
+ggplot(data=tidy_Tena, mapping=aes(x="Centro",y="Mort_Tena"))+geom_boxplot()
 ```
 
