@@ -60,11 +60,11 @@ pander(summary(tidy_Tena,caption="Resumen data frame"))
 
 hist_ing <- ggplot(tidy_Tena,aes(Ingreso))+
   geom_histogram(fill="blue",bins=10)+
-  labs(title = "Figura 1. Histograma de número de Ingreso de peces")
+  labs(title = "Figura 1. Histograma de número de ingreso de peces")
 hist_ing
 blot_ing <- ggplot(tidy_Tena,aes(y=Ingreso,x=Alimento))+
   geom_boxplot(fill="blue",outlier.colour = "red")+
-  labs(title="Figura 2. Boxplot de número ingreso peces por tipo de alimento",y="Ingreso",x="Tipo de Alimento")
+  labs(title="Figura 2. Boxplot de número ingreso peces por tipo de alimento",y="Número de ingreso",x="Tipo de Alimento")
 blot_ing
 ```
 
@@ -87,23 +87,23 @@ hist_mort <- ggplot(tidy_Tena,aes(Mortalidad))+
 hist_mort
 blot_mort <- ggplot(tidy_Tena,aes(y=Mortalidad,x=Alimento))+
   geom_boxplot(fill="orange",outlier.colour = "red")+
-  labs(title="Figura 6. Boxplot de mortalidad total por tipo de alimento",y="Mortalidad total",x="Tipo de Alimento")
+  labs(title="Figura 6. Boxplot de mortalidad total por tipo de alimento",y="Número de mortalidad total",x="Tipo de Alimento")
 blot_mort
 ```
 ```{r Histograma y boxplot Mortalidad Tenacibaculosis,echo=TRUE}
 
 hist_Tena <- ggplot(tidy_Tena,aes(Mort_Tena))+
   geom_histogram(fill="green",bins=10)+
-  labs(title = "Figura 7. Histograma de número de Mortalidad por Tenacibaculosis")
+  labs(title = "Figura 7. Histograma de número de mortalidad por Tenacibaculosis")
 hist_Tena
 blot_Tena <- ggplot(tidy_Tena,aes(y=Mort_Tena,x=Alimento))+
   geom_boxplot(fill="green",outlier.colour = "red")+
-  labs(title="Figura 8. Boxplot de mortalidad por Tenacibaculosis según tipo de alimento",y="Mortalidad por Tenacibaculosis",x="Tipo de Alimento")
+  labs(title="Figura 8. Boxplot mortalidad Tenacibaculosis por tipo de alimento",y="Número mortalidad por Tenacibaculosis",x="Tipo de Alimento")
 blot_Tena
 ```
 
 ```{r Gráficos interacción 1,echo=TRUE}
-interaction.plot(tidy_Tena$Centro,tidy_Tena$Alimento, tidy_Tena$Peso_g,trace.label="Alimento",fun=mean,main="Figura 9. Gráfico de interacción Peso promedio", xlab="Centro",ylab="Peso promedio (g)",type="b", col= c("black", "red"),pch=c(19,17))
+interaction.plot(tidy_Tena$Centro,tidy_Tena$Alimento, tidy_Tena$Peso_g,trace.label="Alimento",fun=mean,main="Figura 9. Interacción entre peso promedio y factores", xlab="Centro",ylab="Peso promedio (g)",type="b", col= c("black", "red"),pch=c(19,17))
  
 plot.design(tidy_Tena$Peso_g~tidy_Tena$Centro*tidy_Tena$Alimento,main="Figura 10. Gráfico de interacción",xlab="Factores", ylab="Peso promedio (g)")
 ```
@@ -113,7 +113,7 @@ plot.design(tidy_Tena$Peso_g~tidy_Tena$Centro*tidy_Tena$Alimento,main="Figura 10
 ```{r Gráficos interacción 2,echo=TRUE}
 #Establecer relación entre variables cuantitativas y factores usando gráficas de correlación, boxplot, interacción o de tamaño de los efectos:
 
-interaction.plot(tidy_Tena$Centro,tidy_Tena$Alimento, tidy_Tena$Mortalidad,trace.label="Alimento",fun=mean,main="Figura 11. Gráfico de interacción Mortalidad total", xlab="Centro",ylab="Mortalidad",type="b", col= c("black", "red"),pch=c(19,17))
+interaction.plot(tidy_Tena$Centro,tidy_Tena$Alimento, tidy_Tena$Mortalidad,trace.label="Alimento",fun=mean,main="Figura 11. Interacción entre mortalidad total y factores", xlab="Centro",ylab="Mortalidad",type="b", col= c("black", "red"),pch=c(19,17))
  
 plot.design(tidy_Tena$Mortalidad~tidy_Tena$Centro*tidy_Tena$Alimento,main="Figura 12. Gráfico de interacción",xlab="Factores", ylab="Mortalidad")
 ```
@@ -122,7 +122,7 @@ plot.design(tidy_Tena$Mortalidad~tidy_Tena$Centro*tidy_Tena$Alimento,main="Figur
 
 
 ```{r Gráficos interacción 3,echo=TRUE}
-interaction.plot(tidy_Tena$Centro,tidy_Tena$Alimento, tidy_Tena$Mort_Tena,trace.label="Alimento",fun=mean,main="Figura 13. Gráfico de interacción Mortalidad Tenacibaculosis", xlab="Centro",ylab="Mortalidad Tenacibaculosis",type="b", col= c("black", "red"),pch=c(19,17))
+interaction.plot(tidy_Tena$Centro,tidy_Tena$Alimento, tidy_Tena$Mort_Tena,trace.label="Alimento",fun=mean,main="Figura 13. Interacción entre mortalidad Tenacibaculosis y factores", xlab="Centro",ylab="Mortalidad Tenacibaculosis",type="b", col= c("black", "red"),pch=c(19,17))
  
 plot.design(tidy_Tena$Mort_Tena~tidy_Tena$Centro*tidy_Tena$Alimento,main="Figura 14. Gráfico de interacción de factores",xlab="Factores", ylab="Mortalidad Tenacibaculosis")
 ```
