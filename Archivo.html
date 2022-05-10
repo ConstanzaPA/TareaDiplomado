@@ -2999,21 +2999,23 @@ mortalidad en Salmón del Atlántico</h1>
 </div>
 
 
-<p>Descripción del problema a resolver: La Tenacibaculosis es una
-infección bacteriana cuya etiología Tenacibaculum maritimus (Flexibacter
-maritimus) afecta principalmente al cultivo de Salmón del Atlántico.
-Principalmente se evidencian lesiones macroscópicas en la superficie del
-cuerpo; úlceras, necrosis, boca erosionada, aletas deshilachadas y cola
-con pudrición, y a veces necrosis en las branquias y los ojos
-(congestión choroidal y hemorragia sub-choroidal, a veces con ruptura
-del ojo). Por tal motivo, es importante determinar la implicancia de la
-mortalidad causada por Tenacibaculosis en agua de mar.</p>
-<p>Variables de estudio: peso promedio de los peces en gramos (Peso_g),
-número de mortalidad total de peces (Mortalidad) y número de mortalidad
-de peces causada por Tenacibaculosis (Mort_Tena).</p>
-<p>Factor a analizar: Centros en agua de mar (Centro) y tipo de alimento
-(Alimento).</p>
-<p>Número total de observaciones: 24</p>
+<p><strong>Descripción del problema a resolver:</strong> La
+Tenacibaculosis es una infección bacteriana cuya etiología Tenacibaculum
+maritimus (Flexibacter maritimus) afecta principalmente al cultivo de
+Salmón del Atlántico. Principalmente se evidencian lesiones
+macroscópicas en la superficie del cuerpo; úlceras, necrosis, boca
+erosionada, aletas deshilachadas y cola con pudrición, y a veces
+necrosis en las branquias y los ojos (congestión choroidal y hemorragia
+sub-choroidal, a veces con ruptura del ojo). Por tal motivo, es
+importante determinar la implicancia de la mortalidad causada por
+Tenacibaculosis en agua de mar.</p>
+<p><strong>Variables de estudio:</strong> peso promedio de los peces en
+gramos (Peso_g), número de mortalidad total de peces (Mortalidad) y
+número de mortalidad de peces causada por Tenacibaculosis
+(Mort_Tena).</p>
+<p><strong>Factor a analizar:</strong> Centros en agua de mar (Centro) y
+tipo de alimento (Alimento).</p>
+<p><strong>Número total de observaciones:</strong> 24</p>
 <pre class="r"><code>#Cargar la base de datos en el objeto Tena:
 Tena &lt;- read_excel(&quot;Tenacibaculosis.xlsx&quot;, sheet=1,na=&quot;NA&quot;)</code></pre>
 <pre><code>## New names:
@@ -3105,8 +3107,8 @@ summary(tidy_Tena)</code></pre>
 ##   24    0    0   1   0   0</code></pre>
 <pre class="r"><code>#Generar una tabla con la base de datos de tidy_Tena con función datatable:
 DT::datatable(tidy_Tena,caption=&quot;Tabla 1. Número de ingreso, peso promedio y número de mortalidad por Centro&quot;)</code></pre>
-<div id="htmlwidget-805330400aa4684741d2" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-805330400aa4684741d2">{"x":{"filter":"none","vertical":false,"caption":"<caption>Tabla 1. Número de ingreso, peso promedio y número de mortalidad por Centro<\/caption>","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24"],["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24"],["BS2","BSS","BSS","BSS","BS2","BS2","BES1","BES1","BES1","BESS","BESS","BS1","BES1","BES1","BS1","BS1","BS1","BESS","BS1","BES1","BS1","BS1","BS1","BS1"],[1071766,1000000,1000000,1142646,696340,987641,1000000,1505778,989300,1100000,1500000,934684,1136529,1540402,997107,1154452,1435371,1050000,1100000,1000000,850000,1076529,1105822,750000],[288.9,168.9,177.2,181.5,263.9,205.8,130.8,209,157.6,232.7,216.8,236.3,157.4,245.3,280.1,280.5,161,204.6,274.5,213.7,276.7,227.9,222,206.2],[169616,106931,53899,130679,53068,85143,96500,233612,124742,168559,195360,269780,191931,138557,276800,428005,306759,226035,173272,114216,176898,281329,12875,10073],[0,0,0,0,0,0,376,540,13201,5,0,8891,9464,1521,6152,73389,13495,1,1549,6398,2479,29769,0,6]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Centro<\/th>\n      <th>Alimento<\/th>\n      <th>Ingreso<\/th>\n      <th>Peso_g<\/th>\n      <th>Mortalidad<\/th>\n      <th>Mort_Tena<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[3,4,5,6]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-f7990ae40313a5d54448" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-f7990ae40313a5d54448">{"x":{"filter":"none","vertical":false,"caption":"<caption>Tabla 1. Número de ingreso, peso promedio y número de mortalidad por Centro<\/caption>","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24"],["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24"],["BS2","BSS","BSS","BSS","BS2","BS2","BES1","BES1","BES1","BESS","BESS","BS1","BES1","BES1","BS1","BS1","BS1","BESS","BS1","BES1","BS1","BS1","BS1","BS1"],[1071766,1000000,1000000,1142646,696340,987641,1000000,1505778,989300,1100000,1500000,934684,1136529,1540402,997107,1154452,1435371,1050000,1100000,1000000,850000,1076529,1105822,750000],[288.9,168.9,177.2,181.5,263.9,205.8,130.8,209,157.6,232.7,216.8,236.3,157.4,245.3,280.1,280.5,161,204.6,274.5,213.7,276.7,227.9,222,206.2],[169616,106931,53899,130679,53068,85143,96500,233612,124742,168559,195360,269780,191931,138557,276800,428005,306759,226035,173272,114216,176898,281329,12875,10073],[0,0,0,0,0,0,376,540,13201,5,0,8891,9464,1521,6152,73389,13495,1,1549,6398,2479,29769,0,6]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Centro<\/th>\n      <th>Alimento<\/th>\n      <th>Ingreso<\/th>\n      <th>Peso_g<\/th>\n      <th>Mortalidad<\/th>\n      <th>Mort_Tena<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[3,4,5,6]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 <pre class="r"><code>#Resumen de estadística descriptiva con función pander:
 pander(summary(tidy_Tena,caption=&quot;Resumen data frame&quot;))</code></pre>
 <table>

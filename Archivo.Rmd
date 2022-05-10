@@ -16,14 +16,14 @@ library(pander)
 library(DT)
 ```
 
-Descripción del problema a resolver: 
+**Descripción del problema a resolver:** 
 La Tenacibaculosis es una infección bacteriana cuya etiología Tenacibaculum maritimus (Flexibacter maritimus) afecta principalmente al cultivo de Salmón del Atlántico. Principalmente se evidencian lesiones macroscópicas en la superficie del cuerpo; úlceras, necrosis, boca erosionada, aletas deshilachadas y cola con pudrición, y a veces necrosis en las branquias y los ojos (congestión choroidal y hemorragia sub-choroidal, a veces con ruptura del ojo). Por tal motivo, es importante determinar la implicancia de la mortalidad causada por Tenacibaculosis en agua de mar.
 
-Variables de estudio: peso promedio de los peces en gramos (Peso_g), número de mortalidad total de peces (Mortalidad) y número de mortalidad de peces causada por Tenacibaculosis (Mort_Tena). 
+**Variables de estudio:** peso promedio de los peces en gramos (Peso_g), número de mortalidad total de peces (Mortalidad) y número de mortalidad de peces causada por Tenacibaculosis (Mort_Tena). 
 
-Factor a analizar: Centros en agua de mar (Centro) y tipo de alimento (Alimento).
+**Factor a analizar:** Centros en agua de mar (Centro) y tipo de alimento (Alimento).
 
-Número total de observaciones: 24
+**Número total de observaciones:** 24
 
 
 ```{r Preparar datos,echo=TRUE}
@@ -38,7 +38,7 @@ head(tidy_Tena)
 #Explorar si las variables son números o carácteres:
 str(tidy_Tena)
 
-#Transformar Centro a factor usando as.factor y visualizar que Centro esté transformado adecuadamente a factor y los datos están balanceados:
+#Transformar Centro y Alimento a factor usando as.factor, luego visualizar que Centro y Alimento estén transformados adecuadamente a factor y que los datos están balanceados:
 tidy_Tena$Centro <- as.factor(tidy_Tena$Centro)
 tidy_Tena$Alimento <- as.factor(tidy_Tena$Alimento)
 summary(tidy_Tena)
@@ -55,7 +55,7 @@ pander(summary(tidy_Tena,caption="Resumen data frame"))
 
 
 ```{r Histograma y boxplot Ingreso, echo=TRUE}
-#Observar el comportamiento de las variables en estudio usando histogramas y boxplot:
+#Observar el comportamiento de las variables en estudio usando histogramas y boxplot (valor atípico se muestra en punto de color rojo):
 
 hist_ing <- ggplot(tidy_Tena,aes(Ingreso))+
   geom_histogram(fill="blue",bins=10)+
