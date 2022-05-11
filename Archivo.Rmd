@@ -49,10 +49,8 @@ summary(tidy_Tena)
 table(tidy_Tena$Centro,tidy_Tena$Alimento)
 
 ```
-
-
-
-
+**Tablas de resumen:**
+En la tabla 1 se muestra la base de datos que se utiliza en este trabajo y, luego, en la tabla 2 está un resumen de estadística descriptiva.
 ```{r Tablas de datos y estadística, echo=TRUE}
 
 #Generar una tabla con la base de datos de tidy_Tena con función datatable:
@@ -63,6 +61,8 @@ pander(summary(tidy_Tena,caption="Tabla 2. Resumen data frame"))
 
 ```
 
+**Gráficos de histograma y boxplot:**
+Se describe la variación de cada variable de estudio usando histogramas y boxplot, como se muestra desde la figura 1 a la 8.
 ```{r Histograma y boxplot Ingreso, echo=TRUE}
 #Observar el comportamiento de las variables en estudio usando histogramas y boxplot (valor atípico se muestra en punto de color rojo):
 
@@ -110,6 +110,8 @@ blot_Tena <- ggplot(tidy_Tena,aes(y=Mort_Tena,x=Alimento))+
 blot_Tena
 ```
 
+**Gráficos de interacción:**
+Desde la figura 9 a la 14 se muestran gráficos de interacción entre cada variable cuantitativa y los factores.
 ```{r Gráficos interacción 1,echo=TRUE}
 #Establecer relación entre variables cuantitativas y factores usando gráficas de correlación, boxplot, interacción o de tamaño de los efectos:
 
