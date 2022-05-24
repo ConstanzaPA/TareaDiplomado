@@ -20,10 +20,10 @@ library(DT)
 Tenacibaculosis es una infección bacteriana cuya etiología Tenacibaculum maritimus (Flexibacter maritimus) afecta principalmente al cultivo de Salmón del Atlántico. Principalmente se evidencian lesiones macroscópicas en la superficie del cuerpo; úlceras, necrosis, boca erosionada, aletas deshilachadas y cola con pudrición, y a veces necrosis en las branquias y los ojos (congestión choroidal y hemorragia sub-choroidal, a veces con ruptura del ojo). Debido a su impacto en la salud de Salmón del Atlántico, es importante analizar la influencia de esta enfermedad en la mortalidad en los centros de cultivo en agua de mar.
 
 **Variables de estudio:** 
-En este trabajo se observarán las variables obtenidas durante los últimos cinco años en cuanto a número de ingreso de peces a cada centro de cultivo en agua de mar, peso promedio de los peces cosechados en kilogramos (Peso_cosecha), número de mortalidad total (Mortalidad) y número de mortalidad causada por Tenacibaculosis (Mort_Tena).
+En este trabajo se observarán las variables obtenidas durante los últimos cinco años en cuanto a número de ingreso de peces a cada centro de cultivo en agua de mar, peso promedio de los peces cosechados en kilogramos (Peso_cosecha), número de mortalidad total (Mortalidad) y número de mortalidad causada por Tenacibaculosis (Mort_Tena), número de mortalidad por Enfermedad Bacteriana del Riñón (Mort_BKD) y número de mortalidad por Septicemia Rickettsial Salmonídea (Mort_SRS).
 
 **Factor a analizar:** 
-Los factores serán las variables Centros en agua de mar (Centro) y tipo de alimento (Alimento).
+Los factores serán las variables Unidad en agua de mar (Unidad) y tipo de alimento (Alimento).
 
 **Número total de observaciones:** 
 Analizaré los resultados observados en 24 centros de cultivo en agua de mar.
@@ -33,20 +33,21 @@ Analizaré los resultados observados en 24 centros de cultivo en agua de mar.
 
 #Cargar la base de datos en el objeto Tena:
 Tena <- read_excel("Tenacibaculosis.xlsx", sheet=1,na="NA")
+Tena <- na.omit(Tena)
 head(Tena)
 
 #Ordenar Tena creando un objeto tidy_Tena con las variables de interés:
-tidy_Tena <- select(Tena,Centro,Alimento,Ingreso,Peso_cosecha,Mortalidad,Mort_Tena)
+tidy_Tena <- select(Tena,Unidad,Alimento,Ingreso,Peso_cosecha,Mortalidad,Mort_Tena,Mort_BKD,Mort_SRS)
 head(tidy_Tena)
 
 #Explorar si las variables son números o carácteres:
 str(tidy_Tena)
 
 #Transformar Centro y Alimento a factor usando as.factor, luego visualizar que Centro y Alimento estén transformados adecuadamente a factor y que los datos están balanceados:
-tidy_Tena$Centro <- as.factor(tidy_Tena$Centro)
+tidy_Tena$Unidad <- as.factor(tidy_Tena$Unidad)
 tidy_Tena$Alimento <- as.factor(tidy_Tena$Alimento)
 summary(tidy_Tena)
-table(tidy_Tena$Centro,tidy_Tena$Alimento)
+table(tidy_Tena$Unidad,tidy_Tena$Alimento)
 
 ```
 **Tablas de resumen:**
@@ -54,7 +55,7 @@ En la tabla 1 se muestra la base de datos que se utiliza en este trabajo y, lueg
 ```{r Tablas de datos y estadística, echo=TRUE}
 
 #Generar una tabla con la base de datos de tidy_Tena con función datatable:
-DT::datatable(tidy_Tena,caption="Tabla 1. Número de ingreso, peso cosecha y número de mortalidad por Centro")
+DT::datatable(tidy_Tena,caption="Tabla 1. Número de peces ingresados, peso cosecha, mortalidad total, mortalidad Tenacibaculosis, mortalidad BKD y mortalidad SRS por Unidad")
 
 #Resumen de estadística descriptiva con función pander:
 pander(summary(tidy_Tena,caption="Tabla 2. Resumen data frame"))
@@ -109,6 +110,19 @@ blot_Tena <- ggplot(tidy_Tena,aes(y=Mort_Tena,x=Alimento))+
   labs(title="Figura 8. Boxplot mortalidad Tenacibaculosis por tipo de alimento",y="Número mortalidad por Tenacibaculosis",x="Tipo de Alimento")
 blot_Tena
 ```
+
+```{r}
+ggplot(data=tidy_Tena, aes(x=Unidad,y=Ingreso))+geom_boxplot()
+ggplot(data=tidy_Tena, aes(x=Unidad,y=Ingreso))+geom_boxplot()
+ggplot(data=tidy_Tena, aes(x=Unidad,y=Mortalidad))+geom_boxplot()
+ggplot(data=tidy_Tena, aes(x=Unidad,y=Mort_Tena))+geom_boxplot()
+ggplot(data=tidy_Tena, aes(x=Unidad,y=Mort_BKD))+geom_boxplot()
+ggplot(data=tidy_Tena, aes(x=Unidad,y=Mort_SRS))+geom_boxplot()
+```
+
+
+
+
 
 **Gráficos de interacción:**
 Desde la figura 9 a la 14 se muestran gráficos de interacción entre cada variable cuantitativa y los factores.
