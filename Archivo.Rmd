@@ -14,6 +14,7 @@ library(tidyverse)
 library(kableExtra)
 library(pander)
 library(DT)
+library(gridExtra)
 ```
 
 **Descripción del problema a resolver:** 
@@ -62,70 +63,86 @@ pander(summary(tidy_Tena,caption="Tabla 2. Resumen data frame"))
 
 ```
 
-**Gráficos de histograma y boxplot:**
-Se describe la variación de cada variable de estudio usando histogramas y boxplot, como se muestra desde la figura 1 a la 8.
-```{r Histograma y boxplot Ingreso, echo=TRUE}
+**Gráficos de histogramas y boxplot:**
+Se describe la variación de cada variable de estudio usando histogramas y boxplot. En la Figura 1 se muestran los histogramas de ingreso, peso cosecha, mortalidad total, mortalidad por Tenacibaculosis, mortalidad por BKD y mortalidad por SRS. Mientras que en la Figura 2 se muestran los boxplot de las mismas variables por tipo de alimento.
+
+```{r Histogramas, echo=TRUE}
 #Observar el comportamiento de las variables en estudio usando histogramas y boxplot (valor atípico se muestra en punto de color rojo):
 
 hist_ing <- ggplot(tidy_Tena,aes(Ingreso))+
-  geom_histogram(fill="blue",bins=10)+
-  labs(title = "Figura 1. Histograma de número de ingreso de peces")
-hist_ing
-blot_ing <- ggplot(tidy_Tena,aes(y=Ingreso,x=Alimento))+
-  geom_boxplot(fill="blue",outlier.colour = "red")+
-  labs(title="Figura 2. Boxplot de número ingreso peces por tipo de alimento",y="Número de ingreso",x="Tipo de Alimento")
-blot_ing
-```
-
-```{r Histograma y boxplot Peso promedio cosecha ,echo=TRUE}
+  geom_histogram(fill="lightblue",color="black",bins=10)+
+  labs(title = "Cantidad de ingreso de peces")
 
 hist_peso <- ggplot(tidy_Tena,aes(Peso_cosecha))+
-  geom_histogram(fill="red",bins=12)+
-  labs(title = "Figura 3. Histograma de peso promedio cosecha de los peces")
-hist_peso
-blot_peso <- ggplot(tidy_Tena,aes(y=Peso_cosecha,x=Alimento))+
-  geom_boxplot(fill="red",outlier.colour = "red")+
-  labs(title="Figura 4. Boxplot de peso promedio cosecha por tipo de alimento",y="Peso promedio cosecha",x="Tipo de Alimento")
-blot_peso
-```
-```{r Histograma y boxplot Mortalidad total,echo=TRUE}
+  geom_histogram(fill="lightblue",color="black",bins=12)+
+  labs(title = "Peso cosecha promedio de los peces")
 
 hist_mort <- ggplot(tidy_Tena,aes(Mortalidad))+
-  geom_histogram(fill="orange",bins=12)+
-  labs(title = "Figura 5. Histograma de número de mortalidad total")
-hist_mort
-blot_mort <- ggplot(tidy_Tena,aes(y=Mortalidad,x=Alimento))+
-  geom_boxplot(fill="orange",outlier.colour = "red")+
-  labs(title="Figura 6. Boxplot de mortalidad total por tipo de alimento",y="Número de mortalidad total",x="Tipo de Alimento")
-blot_mort
-```
-```{r Histograma y boxplot Mortalidad Tenacibaculosis,echo=TRUE}
+  geom_histogram(fill="lightblue",color="black",bins=12)+
+  labs(title = "Mortalidad total")
 
 hist_Tena <- ggplot(tidy_Tena,aes(Mort_Tena))+
-  geom_histogram(fill="green",bins=10)+
-  labs(title = "Figura 7. Histograma de número de mortalidad por Tenacibaculosis")
-hist_Tena
+  geom_histogram(fill="lightblue",color="black",bins=10)+
+  labs(title = "Mortalidad por Tenacibaculosis")
+
+hist_BKD <- ggplot(tidy_Tena,aes(Mort_BKD))+
+  geom_histogram(fill="lightblue",color="black",bins=10)+
+  labs(title = "Mortalidad por BKD")
+
+hist_SRS <- ggplot(tidy_Tena,aes(Mort_SRS))+
+  geom_histogram(fill="lightblue",color="black",bins=10)+
+  labs(title = "Mortalidad por SRS")
+
+grid.arrange(hist_ing, hist_peso, hist_mort, hist_Tena, hist_BKD, hist_SRS, ncol=2, nrow =3)
+
+```
+
+```{r Boxplot variables por tipo de alimento ,echo=TRUE}
+
+blot_ing <- ggplot(tidy_Tena,aes(y=Ingreso,x=Alimento))+
+  geom_boxplot(fill="lightgreen",outlier.colour = "red")+
+  labs(y="Ingreso",x="Tipo de Alimento")
+
+blot_peso <- ggplot(tidy_Tena,aes(y=Peso_cosecha,x=Alimento))+
+  geom_boxplot(fill="lightgreen",outlier.colour = "red")+
+  labs(y="Peso cosecha",x="Tipo de Alimento")
+
+blot_mort <- ggplot(tidy_Tena,aes(y=Mortalidad,x=Alimento))+
+  geom_boxplot(fill="lightgreen",outlier.colour = "red")+
+  labs(y="Mortalidad total",x="Tipo de Alimento")
+
 blot_Tena <- ggplot(tidy_Tena,aes(y=Mort_Tena,x=Alimento))+
-  geom_boxplot(fill="green",outlier.colour = "red")+
-  labs(title="Figura 8. Boxplot mortalidad Tenacibaculosis por tipo de alimento",y="Número mortalidad por Tenacibaculosis",x="Tipo de Alimento")
-blot_Tena
+  geom_boxplot(fill="lightgreen",outlier.colour = "red")+
+  labs(y="Mort. Tenacibaculosis",x="Tipo de Alimento")
+
+blot_BKD <- ggplot(tidy_Tena,aes(y=Mort_BKD,x=Alimento))+
+  geom_boxplot(fill="lightgreen",outlier.colour = "red")+
+  labs(y="Mort. BKD",x="Tipo de Alimento")
+
+blot_SRS <- ggplot(tidy_Tena,aes(y=Mort_SRS,x=Alimento))+
+  geom_boxplot(fill="lightgreen",outlier.colour = "red")+
+  labs(y="Mort. SRS",x="Tipo de Alimento")
+
+grid.arrange(blot_ing, blot_peso, blot_mort, blot_Tena, blot_BKD, blot_SRS, ncol=2, nrow =3)
+
 ```
 
-```{r}
-ggplot(data=tidy_Tena, aes(x=Unidad,y=Ingreso))+geom_boxplot()
-ggplot(data=tidy_Tena, aes(x=Unidad,y=Ingreso))+geom_boxplot()
-ggplot(data=tidy_Tena, aes(x=Unidad,y=Mortalidad))+geom_boxplot()
-ggplot(data=tidy_Tena, aes(x=Unidad,y=Mort_Tena))+geom_boxplot()
-ggplot(data=tidy_Tena, aes(x=Unidad,y=Mort_BKD))+geom_boxplot()
-ggplot(data=tidy_Tena, aes(x=Unidad,y=Mort_SRS))+geom_boxplot()
+
+```{r ,echo=TRUE}
+
+bi <- ggplot(data=tidy_Tena, aes(x=Unidad,y=Ingreso))+geom_boxplot()
+bp <-ggplot(data=tidy_Tena, aes(x=Unidad,y=Peso_cosecha))+geom_boxplot()
+bm <-ggplot(data=tidy_Tena, aes(x=Unidad,y=Mortalidad))+geom_boxplot()
+bt <-ggplot(data=tidy_Tena, aes(x=Unidad,y=Mort_Tena))+geom_boxplot()
+bb <-ggplot(data=tidy_Tena, aes(x=Unidad,y=Mort_BKD))+geom_boxplot()
+bs <-ggplot(data=tidy_Tena, aes(x=Unidad,y=Mort_SRS))+geom_boxplot()
+
+grid.arrange(bi, bp, bm, bt, bb, bs, ncol=2, nrow =3)
 ```
-
-
-
 
 
 **Gráficos de interacción:**
-Desde la figura 9 a la 14 se muestran gráficos de interacción entre cada variable cuantitativa y los factores.
+En Figura 4 se muestran los gráficos de interacción entre cada variable cuantitativa y los factores.
 ```{r Gráficos interacción 1,echo=TRUE}
 #Establecer relación entre variables cuantitativas y factores usando gráficas de correlación, boxplot, interacción o de tamaño de los efectos:
 
