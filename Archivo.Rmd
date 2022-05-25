@@ -115,7 +115,7 @@ Figura 2.
 ```{r Boxplot variables por tipo de alimento ,echo=TRUE}
 
 blot_ing <- ggplot(tidy_Tena,aes(y=Ingreso,x=Alimento))+
-  geom_boxplot(fill="lightblue",outlier.colour = "red")+
+  geom_boxplot(fill="lightgreen",outlier.colour = "red")+
   labs(y="Ingreso",x="Tipo de Alimento")
 
 blot_peso <- ggplot(tidy_Tena,aes(y=Peso_cosecha,x=Alimento))+
