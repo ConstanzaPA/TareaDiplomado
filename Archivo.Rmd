@@ -27,7 +27,7 @@ En este trabajo se observarán las variables obtenidas durante los últimos cinc
 Los factores serán las variables Unidad en agua de mar (Unidad) y tipo de alimento (Alimento).
 
 **Número total de observaciones:** 
-Analizaré los resultados observados en 24 centros de cultivo en agua de mar.
+Analizaré los resultados observados en 236 unidades o jaulas de cultivo en agua de mar.
 
 
 ```{r Preparar datos,echo=TRUE}
