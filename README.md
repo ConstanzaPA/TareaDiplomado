@@ -8,11 +8,8 @@ Tenacibaculosis es una infección bacteriana cuya etiología Tenacibaculum marit
 En este trabajo se observarán las variables obtenidas durante los últimos cinco años en cuanto a número de ingreso de peces a cada centro de cultivo en agua de mar, peso promedio de los peces cosechados en kilogramos (Peso_cosecha), número de mortalidad total (Mortalidad) y número de mortalidad causada por Tenacibaculosis (Mort_Tena), número de mortalidad por Enfermedad Bacteriana del Riñón (Mort_BKD) y número de mortalidad por Septicemia Rickettsial Salmonídea (Mort_SRS). 
 
 ### Factor a analizar: 
-<<<<<<< HEAD
-Los factores serán las variables Unidades en agua de mar (Unidad) y tipo de alimento (Alimento).
-=======
 Los factores serán las variables Unidad en agua de mar (Unidad) y tipo de alimento (Alimento).
->>>>>>> 2285e8c6eadad5d9f2ce12d7440b0dc521e509c5
+
 
 ### Número total de observaciones: 
  Analizaré los resultados observados en 236 unidades o jaulas de cultivo en agua de mar.
