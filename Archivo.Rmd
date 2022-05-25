@@ -144,30 +144,35 @@ Figura 3.
 
 
 **Gráficos de interacción:**
-En Figura 4 se muestran los gráficos de interacción entre cada variable cuantitativa y los factores Unidad y Alimento.
+En las siguientes figuras se muestran los gráficos de interacción entre cada variable cuantitativa y los factores Unidad y Alimento.
 
-```{r Gráficos interacción ,echo=TRUE}
+```{r Gráficos blot interacción ,echo=TRUE}
 #Establecer relación entre variables cuantitativas y factores usando gráficas de correlación, boxplot, interacción o de tamaño de los efectos:
 
-ip1 <- interaction.plot(tidy_Tena$Unidad,tidy_Tena$Alimento, tidy_Tena$Peso_cosecha,trace.label="Alimento",fun=mean, xlab="Unidad",ylab="Peso cosecha",type="b", col= c("black", "red"),pch=c(19,17))
+ip1 <- interaction.plot(tidy_Tena$Unidad,tidy_Tena$Alimento, tidy_Tena$Peso_cosecha,trace.label="Alimento",fun=mean, xlab="Unidad",ylab="Peso cosecha",type="b", col= c("black", "blue"),pch=c(19,17))
  
-ip2 <- plot.design(tidy_Tena$Peso_cosecha~tidy_Tena$Unidad*tidy_Tena$Alimento,xlab="Factores", ylab="Peso cosecha")
+ip2 <- interaction.plot(tidy_Tena$Unidad,tidy_Tena$Alimento, tidy_Tena$Mortalidad,trace.label="Alimento",fun=mean,xlab="Unidad",ylab="Mortalidad",type="b", col= c("black", "blue"),pch=c(19,17))
 
-ip3 <- interaction.plot(tidy_Tena$Unidad,tidy_Tena$Alimento, tidy_Tena$Mortalidad,trace.label="Alimento",fun=mean,xlab="Unidad",ylab="Mortalidad",type="b", col= c("black", "red"),pch=c(19,17))
+ip3 <- interaction.plot(tidy_Tena$Unidad,tidy_Tena$Alimento, tidy_Tena$Mort_Tena,trace.label="Alimento",fun=mean,xlab="Unidad",ylab="Mortalidad Tenacibaculosis",type="b", col= c("black", "blue"),pch=c(19,17))
+
+ip4 <- interaction.plot(tidy_Tena$Unidad,tidy_Tena$Alimento, tidy_Tena$Mort_BKD,trace.label="Alimento",fun=mean,xlab="Unidad",ylab="Mortalidad BKD",type="b", col= c("black", "blue"),pch=c(19,17))
+
+ip5 <- interaction.plot(tidy_Tena$Unidad,tidy_Tena$Alimento, tidy_Tena$Mort_SRS,trace.label="Alimento",fun=mean,xlab="Unidad",ylab="Mortalidad SRS",type="b", col= c("black", "blue"),pch=c(19,17))
+
+
+```
+
+
+```{r Gráficos design interacción ,echo=TRUE}
+
+id1 <- plot.design(tidy_Tena$Peso_cosecha~tidy_Tena$Unidad*tidy_Tena$Alimento,xlab="Factores", ylab="Peso cosecha")
  
-ip4 <- plot.design(tidy_Tena$Mortalidad~tidy_Tena$Unidad*tidy_Tena$Alimento,xlab="Factores", ylab="Mortalidad")
-
-ip5 <- interaction.plot(tidy_Tena$Unidad,tidy_Tena$Alimento, tidy_Tena$Mort_Tena,trace.label="Alimento",fun=mean,xlab="Unidad",ylab="Mortalidad Tenacibaculosis",type="b", col= c("black", "red"),pch=c(19,17))
+id2 <- plot.design(tidy_Tena$Mortalidad~tidy_Tena$Unidad*tidy_Tena$Alimento,xlab="Factores", ylab="Mortalidad")
  
-ip6 <- plot.design(tidy_Tena$Mort_Tena~tidy_Tena$Unidad*tidy_Tena$Alimento,xlab="Factores", ylab="Mortalidad Tenacibaculosis")
+id3 <- plot.design(tidy_Tena$Mort_Tena~tidy_Tena$Unidad*tidy_Tena$Alimento,xlab="Factores", ylab="Mortalidad Tenacibaculosis")
 
-ip7 <- interaction.plot(tidy_Tena$Unidad,tidy_Tena$Alimento, tidy_Tena$Mort_BKD,trace.label="Alimento",fun=mean,xlab="Unidad",ylab="Mortalidad BKD",type="b", col= c("black", "red"),pch=c(19,17))
- 
-ip8 <- plot.design(tidy_Tena$Mort_BKD~tidy_Tena$Unidad*tidy_Tena$Alimento,xlab="Factores", ylab="Mortalidad BKD")
+id4 <- plot.design(tidy_Tena$Mort_BKD~tidy_Tena$Unidad*tidy_Tena$Alimento,xlab="Factores", ylab="Mortalidad BKD")
 
-ip9 <- interaction.plot(tidy_Tena$Unidad,tidy_Tena$Alimento, tidy_Tena$Mort_SRS,trace.label="Alimento",fun=mean,xlab="Unidad",ylab="Mortalidad SRS",type="b", col= c("black", "red"),pch=c(19,17))
- 
-ip10 <- plot.design(tidy_Tena$Mort_SRS~tidy_Tena$Unidad*tidy_Tena$Alimento,xlab="Factores", ylab="Mortalidad SRS")
-
+id5 <- plot.design(tidy_Tena$Mort_SRS~tidy_Tena$Unidad*tidy_Tena$Alimento,xlab="Factores", ylab="Mortalidad SRS")
 
 ```
