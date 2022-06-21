@@ -1,0 +1,97 @@
+---
+title: "Implicancia de Tenacibaculosis en la mortalidad de Salmón del Atlántico"
+author: "Constanza Pino Ajenjo"
+date: "`r Sys.Date()`"
+output: 
+  beamer_presentation:
+    theme: Malmoe
+    colortheme: seahorse
+    fonttheme: professionalfonts
+    includes:
+      in_header: mystyle.tex
+subtitle: Diplomado en Análisis de datos con R para la Acuicultura
+institute: Pontificia Universidad Católica de Valparaíso
+---
+
+```{r setup, include=FALSE, comment=TRUE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(ggplot2)
+library(dplyr)
+library(readxl)
+library(tidyverse)
+library(kableExtra)
+library(pander)
+library(DT)
+library(gridExtra)
+```
+
+## INTRODUCCIÓN
+
+**Descripción del problema a resolver:** 
+Tenacibaculosis es una infección bacteriana cuya etiología Tenacibaculum maritimus (Flexibacter maritimus) afecta principalmente al cultivo de Salmón del Atlántico. Principalmente se evidencian lesiones macroscópicas en la superficie del cuerpo; úlceras, necrosis, boca erosionada, aletas deshilachadas y cola con pudrición, y a veces necrosis en las branquias y los ojos (congestión choroidal y hemorragia sub-choroidal, a veces con ruptura del ojo). Debido a su impacto en la salud de Salmón del Atlántico, es importante analizar la influencia de esta enfermedad en la mortalidad en los centros de cultivo en agua de mar.
+
+## INTRODUCCIÓN
+
+**Variables de estudio:** 
+En este trabajo se observan las variables obtenidas durante los últimos cinco años en cuanto a número de ingreso de peces a cada centro de cultivo en agua de mar, peso promedio de los peces cosechados en kilogramos (Peso_cosecha), número de mortalidad total (Mortalidad) y número de mortalidad causada por Tenacibaculosis (Mort_Tena), número de mortalidad por Enfermedad Bacteriana del Riñón (Mort_BKD) y número de mortalidad por Septicemia Rickettsial Salmonídea (Mort_SRS).
+
+**Factor a analizar:** 
+Los factores son las variables Unidad en agua de mar (Unidad) y tipo de alimento (Alimento).
+
+**Número total de observaciones:** 
+Se analizan los resultados observados en 236 unidades o jaulas de cultivo en agua de mar.
+
+## INTRODUCCIÓN
+
+**Resumen de los métodos estadísticos aplicados:**
+
+**Hipótesis:**
+Hipótesis nula (H0) es que Tenacibaculosis no afecta significativamente la mortalidad de Salmón del Atlántico.
+Hipotesis alternativa (H1) es que Tenacibaculosis si afecta significativamente la mortalidad de Salmón del Atlántico.
+
+**Conclusión principal:**
+
+## INTRODUCCIÓN
+
+## R Markdown
+
+This is an R Markdown presentation. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.
+
+## Slide with Bullets
+
+- Bullet 1
+- Bullet 2
+- Bullet 3
+
+## Slide with R Output
+
+```{r Preparar datos, echo = TRUE}
+
+#Cargar la base de datos en el objeto Tena:
+Tena <- read_excel("Tenacibaculosis.xlsx", sheet=1,na="NA")
+Tena <- na.omit(Tena)
+head(Tena)
+
+#Ordenar Tena creando un objeto tidy_Tena con las variables de interés:
+tidy_Tena <- select(Tena,Unidad,Alimento,Ingreso,Peso_cosecha,Mortalidad,Mort_Tena,Mort_BKD,Mort_SRS)
+head(tidy_Tena)
+
+#Explorar si las variables son números o carácteres:
+str(tidy_Tena)
+
+#Transformar Unidad y Alimento a factor usando as.factor, luego visualizar que Unidad y Alimento estén transformados adecuadamente a factor y que los datos están balanceados:
+tidy_Tena$Unidad <- as.factor(tidy_Tena$Unidad)
+tidy_Tena$Alimento <- as.factor(tidy_Tena$Alimento)
+summary(tidy_Tena)
+table(tidy_Tena$Unidad,tidy_Tena$Alimento)
+```
+
+## Slide with Plot
+
+```{r pressure}
+plot(pressure)
+```
+
