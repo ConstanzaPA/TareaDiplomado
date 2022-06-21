@@ -1,5 +1,5 @@
 ---
-title: "Implicancia de Tenacibaculosis en la mortalidad en Salmón del Atlántico"
+title: "Implicancia de Tenacibaculosis en la mortalidad de Salmón del Atlántico"
 author: "Constanza Pino Ajenjo"
 date: "`r Sys.Date()`"
 output: html_document
@@ -101,7 +101,7 @@ Figura 1.
 
 ```{r ,echo=TRUE}
 
-bi <- ggplot(data=tidy_Tena, aes(x=Unidad,y=Ingreso))+geom_boxplot()
+bi <-ggplot(data=tidy_Tena, aes(x=Unidad,y=Ingreso))+geom_boxplot()
 bp <-ggplot(data=tidy_Tena, aes(x=Unidad,y=Peso_cosecha))+geom_boxplot()
 bm <-ggplot(data=tidy_Tena, aes(x=Unidad,y=Mortalidad))+geom_boxplot()
 bt <-ggplot(data=tidy_Tena, aes(x=Unidad,y=Mort_Tena))+geom_boxplot()
