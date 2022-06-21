@@ -26,6 +26,27 @@ library(DT)
 library(gridExtra)
 ```
 
+## Índice
+
+**Introducción**
+
+1. Descripción del problema a resolver
+2. Variables de estudio
+3. Factores a analizar
+4. Número total de observaciones
+5. Resumen de los métodos estadísticos aplicados
+6. Hipótesis
+7. Conclusión principal
+
+## Índice
+
+**Desarrollo**
+
+1. Preparación de los datos
+2. Tablas de resumen
+3. 
+
+
 ## Introducción
 
 **1.** **Descripción del problema a resolver:** 
@@ -36,7 +57,7 @@ Tenacibaculosis es una infección bacteriana cuya etiología Tenacibaculum marit
 **2.** **Variables de estudio:** 
 En este trabajo se observan las variables obtenidas durante los últimos cinco años en cuanto a número de ingreso de peces a cada centro de cultivo en agua de mar, peso promedio de los peces cosechados en kilogramos (Peso_cosecha), número de mortalidad total (Mortalidad) y número de mortalidad causada por Tenacibaculosis (Mort_Tena), número de mortalidad por Enfermedad Bacteriana del Riñón (Mort_BKD) y número de mortalidad por Septicemia Rickettsial Salmonídea (Mort_SRS).
 
-**3.** **Factor a analizar:** 
+**3.** **Factores a analizar:** 
 Los factores son las variables Unidad en agua de mar (Unidad) y tipo de alimento (Alimento).
 
 **4.** **Número total de observaciones:** 
@@ -49,8 +70,10 @@ Se analizan los resultados observados en 236 unidades o jaulas de cultivo en agu
 
 
 **6.** **Hipótesis:**
-Hipótesis nula (H0) es que Tenacibaculosis no afecta significativamente la mortalidad de Salmón del Atlántico.
-Hipotesis alternativa (H1) es que Tenacibaculosis si afecta significativamente la mortalidad de Salmón del Atlántico.
+
+- Hipótesis nula (H0) es que Tenacibaculosis no afecta significativamente la mortalidad de Salmón del Atlántico.
+
+- Hipotesis alternativa (H1) es que Tenacibaculosis si afecta significativamente la mortalidad de Salmón del Atlántico.
 
 **7.** **Conclusión principal:**
 
@@ -58,18 +81,21 @@ Hipotesis alternativa (H1) es que Tenacibaculosis si afecta significativamente l
 
 ## Desarrollo
 
-**Preparación de los datos**
-1. Cargar la base de datos en el objeto Tena:
-```{r Preparar datos 1, echo = TRUE}
+**1.** **Preparación de los datos**
+
+1.1. Cargar la base de datos en el objeto Tena:
+```{r Preparar datos 1, echo = TRUE, out.width = '70%', fig.align='center'}
 
 Tena <- read_excel("Tenacibaculosis.xlsx", sheet=1,na="NA")
 Tena <- na.omit(Tena)
 head(Tena)
 
+
 ```
 
 ## Desarrollo
-2. Ordenar Tena creando un objeto tidy_Tena con las variables de interés:
+
+1.2. Ordenar Tena creando un objeto tidy_Tena con las variables de interés:
 ```{r Preparar datos 2, echo = TRUE}
 
 tidy_Tena <- select(Tena,Unidad,Alimento,Ingreso,Peso_cosecha,Mortalidad,Mort_Tena,Mort_BKD,Mort_SRS)
@@ -77,16 +103,18 @@ head(tidy_Tena)
 ```
 
 ## Desarrollo
-3. Explorar si las variables son números o carácteres:
+
+1.3. Explorar si las variables son números o carácteres:
 ```{r Preparar datos 3, echo=TRUE}
 
 str(tidy_Tena)
 
 ```
 
-
 ## Desarrollo
-4. Transformar Unidad y Alimento a factor usando as.factor, luego visualizar que Unidad y Alimento estén transformados adecuadamente a factor y que los datos están balanceados:
+
+1.4. Transformar Unidad y Alimento a factor usando as.factor, luego visualizar que Unidad y Alimento estén transformados adecuadamente a factor y que los datos están balanceados:
+
 ```{r Preparar datos 4, echo=TRUE}
 
 tidy_Tena$Unidad <- as.factor(tidy_Tena$Unidad)
@@ -95,10 +123,33 @@ summary(tidy_Tena)
 table(tidy_Tena$Unidad,tidy_Tena$Alimento)
 ```
 
+## Desarrollo
 
-## Slide with Plot
+**2.** **Tablas de resumen:**
 
-```{r pressure}
-plot(pressure)
+En la tabla 1 se muestra la base de datos que se utiliza en este trabajo. Luego, en la tabla 2 está un resumen de estadística descriptiva.
+
+2.1. Generar una tabla con la base de datos de tidy_Tena con función datatable:
+
+```{r Tablas de datos y estadística 1, echo=TRUE}
+
+DT::datatable(tidy_Tena,caption="Tabla 1. Número de peces ingresados, peso cosecha, mortalidad total, mortalidad Tenacibaculosis, mortalidad BKD y mortalidad SRS por Unidad")
+
+```
+
+## Desarrollo
+
+2.2. Generar un resumen de estadística descriptiva con función pander:
+
+```{r Tablas de datos y estadística 2, echo=TRUE}
+
+pander(summary(tidy_Tena,caption="Tabla 2. Resumen data frame"))
+
+```
+
+## Desarrollo
+
+```{r}
+
 ```
 
