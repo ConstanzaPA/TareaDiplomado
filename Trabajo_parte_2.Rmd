@@ -37,18 +37,20 @@ Tenacibaculosis es una infección bacteriana cuya etiología Tenacibaculum marit
 
 **Variables de estudio:** 
 En este trabajo se observan las variables obtenidas durante los últimos cinco años en cada centro de cultivo en agua de mar:
-- número de ingreso de peces 
-- peso promedio de los peces cosechados en kilogramos (Peso_cosecha)
-- número de mortalidad total (Mortalidad)
+
 - número de mortalidad causada por Tenacibaculosis (Mort_Tena)
 
+
 **Factores a analizar:** 
+
 - tipos de alimentos (Alimento).
 
 **Número total de observaciones:** 
+
 - 236 jaulas de cultivo en agua de mar (Unidad).
 
 **Hipótesis:**
+
 - Hipótesis nula (H0): los tipos de alimentos son iguales en la mortalidad por Tenacibaculosis.
 
 - Hipotesis alternativa (H1): los tipos de alimentos son distintos.
@@ -56,7 +58,8 @@ En este trabajo se observan las variables obtenidas durante los últimos cinco a
 
 ## Desarrollo
 
-```{r Preparar datos,echo=FALSE}
+```{r Preparar datos, include=FALSE, comment=TRUE}
+knitr::opts_chunk$set(echo = FALSE)
 
 #Cargar la base de datos en el objeto Tena:
 Tena <- read_excel("Tenacibaculosis.xlsx", sheet=1,na="NA")
@@ -78,10 +81,9 @@ table(tidy_Tena$Unidad,tidy_Tena$Alimento)
 
 ```
 
-**Análisis exploratorio de los datos mortalidad por Tenacibaculosis**
+**Análisis exploratorio de los datos de mortalidad por Tenacibaculosis**
 
-```{r Gráficos exploratorios, warning=FALSE, echo = TRUE, message=FALSE, out.width = '70%', fig.align='center'}
-
+```{r Gráficos exploratorios, include=FALSE, comment=TRUE}
 
 My_Theme = theme(axis.title.x = element_text(size = 18),
   axis.text.x = element_text(size = 18),
@@ -98,15 +100,23 @@ blot_Tena <- ggplot(tidy_Tena,aes(y=Mort_Tena,x=Alimento))+
 
 theme_classic()
 
+```
+
+```{r Gráficos, warning=FALSE, echo = TRUE, message=FALSE, out.width = '70%', fig.align='center'}
+knitr::opts_chunk$set(echo = FALSE)
+
 hist_Tena+My_Theme
 blot_Tena+My_Theme
 
 ```
 
+
+
 ## Desarrollo
 
 **Análisis exploratorio: tipo de alimento vs mortalidad por Tenacibaculosis**
-```{r blot, warning=FALSE, echo = TRUE, message=FALSE, out.width = '70%', fig.align='center'}
+```{r blot, warning=FALSE, message=FALSE, out.width = '70%', fig.align='center'}
+knitr::opts_chunk$set(echo = FALSE)
 
 My_Theme = theme(axis.title.x = element_text(size = 18),
   axis.text.x = element_text(size = 18),
@@ -131,7 +141,7 @@ blot_Tena+My_Theme
 
 
 ```{r Tablas de datos y estadística 1, echo=TRUE}
-
+knitr::opts_chunk$set(echo = FALSE)
 
 
 ```
