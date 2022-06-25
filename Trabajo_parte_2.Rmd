@@ -16,6 +16,7 @@ institute: Pontificia Universidad Católica de Valparaíso
 ```{r setup, include=FALSE, comment=TRUE}
 knitr::opts_chunk$set(echo = FALSE)
 
+library(knitr)
 library(ggplot2)
 library(dplyr)
 library(readxl)
@@ -24,112 +25,87 @@ library(kableExtra)
 library(pander)
 library(DT)
 library(gridExtra)
+
 ```
-
-## Índice
-
-**Introducción**
-
-1. Descripción del problema a resolver
-2. Variables de estudio
-3. Factores a analizar
-4. Número total de observaciones
-5. Resumen de los métodos estadísticos aplicados
-6. Hipótesis
-7. Conclusión principal
-
-## Índice
-
-**Desarrollo**
-
-1. Preparación de los datos
-2. Tablas de resumen
-3. 
-
 
 ## Introducción
 
-**1.** **Descripción del problema a resolver:** 
-Tenacibaculosis es una infección bacteriana cuya etiología Tenacibaculum maritimus (Flexibacter maritimus) afecta principalmente al cultivo de Salmón del Atlántico. Principalmente se evidencian lesiones macroscópicas en la superficie del cuerpo; úlceras, necrosis, boca erosionada, aletas deshilachadas y cola con pudrición, y a veces necrosis en las branquias y los ojos (congestión choroidal y hemorragia sub-choroidal, a veces con ruptura del ojo). Debido a su impacto en la salud de Salmón del Atlántico, es importante analizar la influencia de esta enfermedad en la mortalidad en los centros de cultivo en agua de mar.
+**Descripción del problema a resolver:** 
+Tenacibaculosis es una infección bacteriana cuya etiología Tenacibaculum maritimus (Flexibacter maritimus) afecta principalmente al cultivo de Salmón del Atlántico. Principalmente se evidencian lesiones macroscópicas en la superficie del cuerpo; úlceras, necrosis, boca erosionada, aletas deshilachadas y cola con pudrición, y a veces necrosis en las branquias y los ojos (congestión choroidal y hemorragia sub-choroidal, a veces con ruptura del ojo). Debido a su impacto en la salud de Salmón del Atlántico, es importante analizar si los actuales tipos de dieta tienen alguna implicancia en la mortalidad por Tenacibaculosis en los centros de cultivo en agua de mar.
 
 ## Introducción
 
-**2.** **Variables de estudio:** 
-En este trabajo se observan las variables obtenidas durante los últimos cinco años en cuanto a número de ingreso de peces a cada centro de cultivo en agua de mar, peso promedio de los peces cosechados en kilogramos (Peso_cosecha), número de mortalidad total (Mortalidad) y número de mortalidad causada por Tenacibaculosis (Mort_Tena), número de mortalidad por Enfermedad Bacteriana del Riñón (Mort_BKD) y número de mortalidad por Septicemia Rickettsial Salmonídea (Mort_SRS).
+**Variables de estudio:** 
+En este trabajo se observan las variables obtenidas durante los últimos cinco años en cada centro de cultivo en agua de mar:
+- número de ingreso de peces 
+- peso promedio de los peces cosechados en kilogramos (Peso_cosecha)
+- número de mortalidad total (Mortalidad)
+- número de mortalidad causada por Tenacibaculosis (Mort_Tena)
 
-**3.** **Factores a analizar:** 
-Los factores son las variables Unidad en agua de mar (Unidad) y tipo de alimento (Alimento).
+**Factores a analizar:** 
+- tipos de alimentos (Alimento).
 
-**4.** **Número total de observaciones:** 
-Se analizan los resultados observados en 236 unidades o jaulas de cultivo en agua de mar.
+**Número total de observaciones:** 
+- 236 jaulas de cultivo en agua de mar (Unidad).
 
-## Introducción
+**Hipótesis:**
+- Hipótesis nula (H0): los tipos de alimentos son iguales en la mortalidad por Tenacibaculosis.
 
-**5.** **Resumen de los métodos estadísticos aplicados:**
-
-
-
-**6.** **Hipótesis:**
-
-- Hipótesis nula (H0) es que Tenacibaculosis no afecta significativamente la mortalidad de Salmón del Atlántico.
-
-- Hipotesis alternativa (H1) es que Tenacibaculosis si afecta significativamente la mortalidad de Salmón del Atlántico.
-
-**7.** **Conclusión principal:**
-
+- Hipotesis alternativa (H1): los tipos de alimentos son distintos.
 
 
 ## Desarrollo
 
-**1.** **Preparación de los datos**
+**Análisis exploratorio de los datos mortalidad por Tenacibaculosis**
 
-1.1. Cargar la base de datos en el objeto Tena:
-```{r Preparar datos 1, echo = TRUE, out.width = '70%', fig.align='center'}
+```{r Histograma, warning=FALSE, echo = TRUE, message=FALSE, out.width = '70%', fig.align='center',fig.cap="Histograma de Mortalidad por Tenacibaculosis}
 
-Tena <- read_excel("Tenacibaculosis.xlsx", sheet=1,na="NA")
-Tena <- na.omit(Tena)
-head(Tena)
+My_Theme = theme(axis.title.x = element_text(size = 18),
+  axis.text.x = element_text(size = 18),
+  axis.title.y = element_text(size = 18),
+  axis.text.y = element_text(size = 18))
 
+hist_Tena <- ggplot(tidy_Tena,aes(Mort_Tena))+
+  geom_histogram(fill="lightblue",color="black",bins=10)+
+  labs(title = "Mortalidad por Tenacibaculosis")
+
+blot_Tena <- ggplot(tidy_Tena,aes(y=Mort_Tena,x=Alimento))+
+  geom_boxplot(fill="lightgreen",outlier.colour = "red")+
+  labs(y="Mort. Tenacibaculosis",x="Tipo de Alimento")
+
+theme_classic()
+
+hist_Tena+My_Theme
+blot_Tena+My_Theme
 
 ```
 
 ## Desarrollo
 
-1.2. Ordenar Tena creando un objeto tidy_Tena con las variables de interés:
-```{r Preparar datos 2, echo = TRUE}
+**Análisis exploratorio: tipo de alimento vs mortalidad por Tenacibaculosis**
+```{r blot, warning=FALSE, echo = TRUE, message=FALSE, out.width = '70%', fig.align='center',fig.cap="Tipo de alimento vs Mortalidad por Tenacibaculosis}
 
-tidy_Tena <- select(Tena,Unidad,Alimento,Ingreso,Peso_cosecha,Mortalidad,Mort_Tena,Mort_BKD,Mort_SRS)
-head(tidy_Tena)
+My_Theme = theme(axis.title.x = element_text(size = 18),
+  axis.text.x = element_text(size = 18),
+  axis.title.y = element_text(size = 18),
+  axis.text.y = element_text(size = 18))
+
+blot_Tena <- ggplot(tidy_Tena,aes(y=Mort_Tena,x=Alimento))+
+  geom_boxplot(fill="lightgreen",outlier.colour = "red")+
+  labs(y="Mort. Tenacibaculosis",x="Tipo de Alimento")
+
+theme_classic()
+
+blot_Tena+My_Theme
 ```
+
+
+
 
 ## Desarrollo
 
-1.3. Explorar si las variables son números o carácteres:
-```{r Preparar datos 3, echo=TRUE}
+**Tablas de resumen:**
 
-str(tidy_Tena)
-
-```
-
-## Desarrollo
-
-1.4. Transformar Unidad y Alimento a factor usando as.factor, luego visualizar que Unidad y Alimento estén transformados adecuadamente a factor y que los datos están balanceados:
-
-```{r Preparar datos 4, echo=TRUE}
-
-tidy_Tena$Unidad <- as.factor(tidy_Tena$Unidad)
-tidy_Tena$Alimento <- as.factor(tidy_Tena$Alimento)
-summary(tidy_Tena)
-table(tidy_Tena$Unidad,tidy_Tena$Alimento)
-```
-
-## Desarrollo
-
-**2.** **Tablas de resumen:**
-
-En la tabla 1 se muestra la base de datos que se utiliza en este trabajo. Luego, en la tabla 2 está un resumen de estadística descriptiva.
-
-2.1. Generar una tabla con la base de datos de tidy_Tena con función datatable:
 
 ```{r Tablas de datos y estadística 1, echo=TRUE}
 
@@ -137,15 +113,7 @@ DT::datatable(tidy_Tena,caption="Tabla 1. Número de peces ingresados, peso cose
 
 ```
 
-## Desarrollo
 
-2.2. Generar un resumen de estadística descriptiva con función pander:
-
-```{r Tablas de datos y estadística 2, echo=TRUE}
-
-pander(summary(tidy_Tena,caption="Tabla 2. Resumen data frame"))
-
-```
 
 ## Desarrollo
 

@@ -174,7 +174,6 @@ ip5 <- interaction.plot(tidy_Tena$Unidad,tidy_Tena$Alimento, tidy_Tena$Mort_SRS,
 
 
 ```{r Gráficos design interacción ,echo=TRUE}
-
 id1 <- plot.design(tidy_Tena$Peso_cosecha~tidy_Tena$Unidad*tidy_Tena$Alimento,xlab="Factores", ylab="Peso cosecha")
  
 id2 <- plot.design(tidy_Tena$Mortalidad~tidy_Tena$Unidad*tidy_Tena$Alimento,xlab="Factores", ylab="Mortalidad")
@@ -184,5 +183,14 @@ id3 <- plot.design(tidy_Tena$Mort_Tena~tidy_Tena$Unidad*tidy_Tena$Alimento,xlab=
 id4 <- plot.design(tidy_Tena$Mort_BKD~tidy_Tena$Unidad*tidy_Tena$Alimento,xlab="Factores", ylab="Mortalidad BKD")
 
 id5 <- plot.design(tidy_Tena$Mort_SRS~tidy_Tena$Unidad*tidy_Tena$Alimento,xlab="Factores", ylab="Mortalidad SRS")
+```
+
+
+```{r Análisis estadístico ,echo=TRUE}
+
+res.aov1 <- lm(Mort_Tena ~ Alimento, data = tidy_Tena)
+anova(res.aov1)
+
+summary(res.aov1)
 
 ```
