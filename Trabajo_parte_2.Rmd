@@ -58,7 +58,7 @@ En este trabajo se observan las variables obtenidas durante los últimos cinco a
 
 ## Desarrollo
 
-```{r Preparar datos, include=FALSE, comment=TRUE}
+```{r Preparar datos, include=FALSE, comment=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 
 #Cargar la base de datos en el objeto Tena:
@@ -67,7 +67,7 @@ Tena <- na.omit(Tena)
 head(Tena)
 
 #Ordenar Tena creando un objeto tidy_Tena con las variables de interés:
-tidy_Tena <- select(Tena,Unidad,Alimento,Ingreso,Peso_cosecha,Mortalidad,Mort_Tena,Mort_BKD,Mort_SRS)
+tidy_Tena <- select(Tena,Unidad,Alimento,Ingreso,Peso_cosecha,Mortalidad,P.Mortalidad,Mort_Tena,P.Mort_Tena,Mort_BKD,P.Mort_BKD,Mort_SRS,P.Mort_SRS)
 head(tidy_Tena)
 
 #Explorar si las variables son números o carácteres:
@@ -81,74 +81,92 @@ table(tidy_Tena$Unidad,tidy_Tena$Alimento)
 
 ```
 
-**Análisis exploratorio de los datos de mortalidad por Tenacibaculosis**
 
-```{r Gráficos exploratorios, include=FALSE, comment=TRUE}
+
+```{r Gráficos exploratorios, include=FALSE, comment=FALSE}
 
 My_Theme = theme(axis.title.x = element_text(size = 18),
   axis.text.x = element_text(size = 18),
   axis.title.y = element_text(size = 18),
   axis.text.y = element_text(size = 18))
 
-hist_Tena <- ggplot(tidy_Tena,aes(Mort_Tena))+
-  geom_histogram(fill="lightblue",color="black",bins=10)+
-  labs(title = "Mortalidad por Tenacibaculosis")
+hist_Tena <- ggplot(tidy_Tena,aes(P.Mort_Tena))+
+  geom_histogram(fill="lightblue",color="black",bins=10)
 
-blot_Tena <- ggplot(tidy_Tena,aes(y=Mort_Tena,x=Alimento))+
+blot_Tena <- ggplot(tidy_Tena,aes(y=P.Mort_Tena,x=Alimento))+
   geom_boxplot(fill="lightgreen",outlier.colour = "red")+
-  labs(y="Mort. Tenacibaculosis",x="Tipo de Alimento")
+  labs(y="% Mort. Tenacibaculosis",x="Tipo de Alimento")
 
 theme_classic()
 
 ```
 
-```{r Gráficos, warning=FALSE, echo = TRUE, message=FALSE, out.width = '70%', fig.align='center'}
-knitr::opts_chunk$set(echo = FALSE)
+**Frecuencia de mortalidad por Tenacibaculosis**
+```{r Gráfico 1, warning=FALSE, message=FALSE, out.width = '70%', fig.align='center',fig.cap="Gráficvo1"}
 
 hist_Tena+My_Theme
-blot_Tena+My_Theme
 
 ```
 
-
-
 ## Desarrollo
 
-**Análisis exploratorio: tipo de alimento vs mortalidad por Tenacibaculosis**
+**Tipo de alimento vs mortalidad por Tenacibaculosis**
 ```{r blot, warning=FALSE, message=FALSE, out.width = '70%', fig.align='center'}
 knitr::opts_chunk$set(echo = FALSE)
 
-My_Theme = theme(axis.title.x = element_text(size = 18),
-  axis.text.x = element_text(size = 18),
-  axis.title.y = element_text(size = 18),
-  axis.text.y = element_text(size = 18))
-
-blot_Tena <- ggplot(tidy_Tena,aes(y=Mort_Tena,x=Alimento))+
-  geom_boxplot(fill="lightgreen",outlier.colour = "red")+
-  labs(y="Mort. Tenacibaculosis",x="Tipo de Alimento")
-
-theme_classic()
-
 blot_Tena+My_Theme
 ```
 
 
-
-
 ## Desarrollo
+```{r, Tabla media y varianza, warning=FALSE, message=FALSE, out.width = '70%', fig.align='center'}
 
-**Tablas de resumen:**
-
-
-```{r Tablas de datos y estadística 1, echo=TRUE}
-knitr::opts_chunk$set(echo = FALSE)
-
+Tabla1 = tidy_Tena %>% group_by(Alimento) %>%
+summarize(N= n(), Mean = mean(P.Mort_Tena),
+          Variance= var(P.Mort_Tena))
 
 ```
 
 
+**Media y varianza de mortalidad causada por Tenacibaculosis por tipo de alimento**
+
+```{r, Tabla 1 warning=FALSE, message=FALSE, out.width = '70%', fig.align='center'}
+
+knitr::kable(Tabla1)
+```
 
 ## Desarrollo
+
+```{r Modelo lineal genral nulo, message=FALSE, out.width = '70%', fig.align='center'}
+
+mod_nulo <- glm(P.Mort_Tena ~ 1,
+family = binomial, data = tidy_Tena)
+
+summary(mod_nulo)$coef %>% kable()
+
+```
+
+## Desarrollo
+
+```{r Modelo lineal general 1, message=FALSE, out.width = '70%', fig.align='center'}
+
+mod_lm1 <- glm(P.Mort_Tena ~ Alimento,
+family= binomial, data = tidy_Tena)
+
+summary(mod_lm1)$coef %>% kable()
+
+```
+
+## Desarrollo
+
+```{r Comparación modelos lineales generales, message=FALSE, out.width = '70%', fig.align='center'}
+
+AIC(mod_nulo,mod_lm1) %>% kable()
+
+```
+
+
+## Conclusión
 
 ```{r}
 

@@ -37,7 +37,6 @@ Se analizan los resultados observados en 236 unidades o jaulas de cultivo en agu
 Hipótesis nula (H0) es que Tenacibaculosis no afecta significativamente la mortalidad de Salmón del Atlántico.
 Hipotesis alternativa (H1) es que Tenacibaculosis si afecta significativamente la mortalidad de Salmón del Atlántico.
 
-**Conclusión principal:**
 
 
 ```{r Preparar datos,echo=TRUE}
@@ -48,7 +47,7 @@ Tena <- na.omit(Tena)
 head(Tena)
 
 #Ordenar Tena creando un objeto tidy_Tena con las variables de interés:
-tidy_Tena <- select(Tena,Unidad,Alimento,Ingreso,Peso_cosecha,Mortalidad,Mort_Tena,Mort_BKD,Mort_SRS)
+tidy_Tena <- select(Tena,Unidad,Alimento,Ingreso,Peso_cosecha,Mortalidad,P.Mortalidad,Mort_Tena,P.Mort_Tena,Mort_BKD,P.Mort_BKD,Mort_SRS,P.Mort_SRS)
 head(tidy_Tena)
 
 #Explorar si las variables son números o carácteres:
@@ -58,7 +57,6 @@ str(tidy_Tena)
 tidy_Tena$Unidad <- as.factor(tidy_Tena$Unidad)
 tidy_Tena$Alimento <- as.factor(tidy_Tena$Alimento)
 summary(tidy_Tena)
-table(tidy_Tena$Unidad,tidy_Tena$Alimento)
 
 ```
 **Tablas de resumen:**
@@ -67,7 +65,7 @@ En la tabla 1 se muestra la base de datos que se utiliza en este trabajo y, lueg
 ```{r Tablas de datos y estadística, echo=TRUE}
 
 #Generar una tabla con la base de datos de tidy_Tena con función datatable:
-DT::datatable(tidy_Tena,caption="Tabla 1. Número de peces ingresados, peso cosecha, mortalidad total, mortalidad Tenacibaculosis, mortalidad BKD y mortalidad SRS por Unidad")
+DT::datatable(tidy_Tena,caption="Tabla 1. Base de datos de número de peces ingresados, peso cosecha, y además número y porcentaje de mortalidad total, mortalidad Tenacibaculosis, mortalidad BKD y mortalidad SRS por Unidad")
 
 #Resumen de estadística descriptiva con función pander:
 pander(summary(tidy_Tena,caption="Tabla 2. Resumen data frame"))
@@ -88,19 +86,19 @@ hist_peso <- ggplot(tidy_Tena,aes(Peso_cosecha))+
   geom_histogram(fill="lightblue",color="black",bins=12)+
   labs(title = "Peso promedio de cosecha")
 
-hist_mort <- ggplot(tidy_Tena,aes(Mortalidad))+
+hist_mort <- ggplot(tidy_Tena,aes(P.Mortalidad))+
   geom_histogram(fill="lightblue",color="black",bins=12)+
   labs(title = "Mortalidad total")
 
-hist_Tena <- ggplot(tidy_Tena,aes(Mort_Tena))+
+hist_Tena <- ggplot(tidy_Tena,aes(P.Mort_Tena))+
   geom_histogram(fill="lightblue",color="black",bins=10)+
   labs(title = "Mortalidad por Tenacibaculosis")
 
-hist_BKD <- ggplot(tidy_Tena,aes(Mort_BKD))+
+hist_BKD <- ggplot(tidy_Tena,aes(P.Mort_BKD))+
   geom_histogram(fill="lightblue",color="black",bins=10)+
   labs(title = "Mortalidad por BKD")
 
-hist_SRS <- ggplot(tidy_Tena,aes(Mort_SRS))+
+hist_SRS <- ggplot(tidy_Tena,aes(P.Mort_SRS))+
   geom_histogram(fill="lightblue",color="black",bins=10)+
   labs(title = "Mortalidad por SRS")
 
@@ -113,10 +111,10 @@ Figura 1.
 
 bi <-ggplot(data=tidy_Tena, aes(x=Unidad,y=Ingreso))+geom_boxplot()
 bp <-ggplot(data=tidy_Tena, aes(x=Unidad,y=Peso_cosecha))+geom_boxplot()
-bm <-ggplot(data=tidy_Tena, aes(x=Unidad,y=Mortalidad))+geom_boxplot()
-bt <-ggplot(data=tidy_Tena, aes(x=Unidad,y=Mort_Tena))+geom_boxplot()
-bb <-ggplot(data=tidy_Tena, aes(x=Unidad,y=Mort_BKD))+geom_boxplot()
-bs <-ggplot(data=tidy_Tena, aes(x=Unidad,y=Mort_SRS))+geom_boxplot()
+bm <-ggplot(data=tidy_Tena, aes(x=Unidad,y=P.Mortalidad))+geom_boxplot()
+bt <-ggplot(data=tidy_Tena, aes(x=Unidad,y=P.Mort_Tena))+geom_boxplot()
+bb <-ggplot(data=tidy_Tena, aes(x=Unidad,y=P.Mort_BKD))+geom_boxplot()
+bs <-ggplot(data=tidy_Tena, aes(x=Unidad,y=P.Mort_SRS))+geom_boxplot()
 
 grid.arrange(bi, bp, bm, bt, bb, bs, ncol=2, nrow =3)
 ```
@@ -132,19 +130,19 @@ blot_peso <- ggplot(tidy_Tena,aes(y=Peso_cosecha,x=Alimento))+
   geom_boxplot(fill="lightgreen",outlier.colour = "red")+
   labs(y="Peso cosecha",x="Tipo de Alimento")
 
-blot_mort <- ggplot(tidy_Tena,aes(y=Mortalidad,x=Alimento))+
+blot_mort <- ggplot(tidy_Tena,aes(y=P.Mortalidad,x=Alimento))+
   geom_boxplot(fill="lightgreen",outlier.colour = "red")+
   labs(y="Mortalidad total",x="Tipo de Alimento")
 
-blot_Tena <- ggplot(tidy_Tena,aes(y=Mort_Tena,x=Alimento))+
+blot_Tena <- ggplot(tidy_Tena,aes(y=P.Mort_Tena,x=Alimento))+
   geom_boxplot(fill="lightgreen",outlier.colour = "red")+
   labs(y="Mort. Tenacibaculosis",x="Tipo de Alimento")
 
-blot_BKD <- ggplot(tidy_Tena,aes(y=Mort_BKD,x=Alimento))+
+blot_BKD <- ggplot(tidy_Tena,aes(y=P.Mort_BKD,x=Alimento))+
   geom_boxplot(fill="lightgreen",outlier.colour = "red")+
   labs(y="Mort. BKD",x="Tipo de Alimento")
 
-blot_SRS <- ggplot(tidy_Tena,aes(y=Mort_SRS,x=Alimento))+
+blot_SRS <- ggplot(tidy_Tena,aes(y=P.Mort_SRS,x=Alimento))+
   geom_boxplot(fill="lightgreen",outlier.colour = "red")+
   labs(y="Mort. SRS",x="Tipo de Alimento")
 
@@ -161,13 +159,13 @@ En las siguientes figuras se muestran los gráficos de interacción entre cada v
 
 ip1 <- interaction.plot(tidy_Tena$Unidad,tidy_Tena$Alimento, tidy_Tena$Peso_cosecha,trace.label="Alimento",fun=mean, xlab="Unidad",ylab="Peso cosecha",type="b", col= c("black", "blue"),pch=c(19,17))
  
-ip2 <- interaction.plot(tidy_Tena$Unidad,tidy_Tena$Alimento, tidy_Tena$Mortalidad,trace.label="Alimento",fun=mean,xlab="Unidad",ylab="Mortalidad",type="b", col= c("black", "blue"),pch=c(19,17))
+ip2 <- interaction.plot(tidy_Tena$Unidad,tidy_Tena$Alimento, tidy_Tena$P.Mortalidad,trace.label="Alimento",fun=mean,xlab="Unidad",ylab="% Mortalidad",type="b", col= c("black", "blue"),pch=c(19,17))
 
-ip3 <- interaction.plot(tidy_Tena$Unidad,tidy_Tena$Alimento, tidy_Tena$Mort_Tena,trace.label="Alimento",fun=mean,xlab="Unidad",ylab="Mortalidad Tenacibaculosis",type="b", col= c("black", "blue"),pch=c(19,17))
+ip3 <- interaction.plot(tidy_Tena$Unidad,tidy_Tena$Alimento, tidy_Tena$Mort_Tena,trace.label="Alimento",fun=mean,xlab="Unidad",ylab="% Mortalidad Tenacibaculosis",type="b", col= c("black", "blue"),pch=c(19,17))
 
-ip4 <- interaction.plot(tidy_Tena$Unidad,tidy_Tena$Alimento, tidy_Tena$Mort_BKD,trace.label="Alimento",fun=mean,xlab="Unidad",ylab="Mortalidad BKD",type="b", col= c("black", "blue"),pch=c(19,17))
+ip4 <- interaction.plot(tidy_Tena$Unidad,tidy_Tena$Alimento, tidy_Tena$P.Mort_BKD,trace.label="Alimento",fun=mean,xlab="Unidad",ylab="% Mortalidad BKD",type="b", col= c("black", "blue"),pch=c(19,17))
 
-ip5 <- interaction.plot(tidy_Tena$Unidad,tidy_Tena$Alimento, tidy_Tena$Mort_SRS,trace.label="Alimento",fun=mean,xlab="Unidad",ylab="Mortalidad SRS",type="b", col= c("black", "blue"),pch=c(19,17))
+ip5 <- interaction.plot(tidy_Tena$Unidad,tidy_Tena$Alimento, tidy_Tena$P.Mort_SRS,trace.label="Alimento",fun=mean,xlab="Unidad",ylab="% Mortalidad SRS",type="b", col= c("black", "blue"),pch=c(19,17))
 
 
 ```
@@ -176,17 +174,28 @@ ip5 <- interaction.plot(tidy_Tena$Unidad,tidy_Tena$Alimento, tidy_Tena$Mort_SRS,
 ```{r Gráficos design interacción ,echo=TRUE}
 id1 <- plot.design(tidy_Tena$Peso_cosecha~tidy_Tena$Unidad*tidy_Tena$Alimento,xlab="Factores", ylab="Peso cosecha")
  
-id2 <- plot.design(tidy_Tena$Mortalidad~tidy_Tena$Unidad*tidy_Tena$Alimento,xlab="Factores", ylab="Mortalidad")
+id2 <- plot.design(tidy_Tena$P.Mortalidad~tidy_Tena$Unidad*tidy_Tena$Alimento,xlab="Factores", ylab="% Mortalidad")
  
-id3 <- plot.design(tidy_Tena$Mort_Tena~tidy_Tena$Unidad*tidy_Tena$Alimento,xlab="Factores", ylab="Mortalidad Tenacibaculosis")
+id3 <- plot.design(tidy_Tena$P.Mort_Tena~tidy_Tena$Unidad*tidy_Tena$Alimento,xlab="Factores", ylab="% Mortalidad Tenacibaculosis")
 
-id4 <- plot.design(tidy_Tena$Mort_BKD~tidy_Tena$Unidad*tidy_Tena$Alimento,xlab="Factores", ylab="Mortalidad BKD")
+id4 <- plot.design(tidy_Tena$P.Mort_BKD~tidy_Tena$Unidad*tidy_Tena$Alimento,xlab="Factores", ylab="% Mortalidad BKD")
 
-id5 <- plot.design(tidy_Tena$Mort_SRS~tidy_Tena$Unidad*tidy_Tena$Alimento,xlab="Factores", ylab="Mortalidad SRS")
+id5 <- plot.design(tidy_Tena$P.Mort_SRS~tidy_Tena$Unidad*tidy_Tena$Alimento,xlab="Factores", ylab="% Mortalidad SRS")
 ```
 
 
-```{r Análisis estadístico ,echo=TRUE}
+```{r, Tabla promedio  varianza ,echo=TRUE}
+# Promedio y varianza de la variable % Mortalidad por Tenacibaculosis para los tipos de alimentos. 
+
+Tabla = tidy_Tena %>% group_by(Alimento) %>%
+summarize(N= n(), Mean = mean(P.Mort_Tena),
+          Variance= var(P.Mort_Tena))
+
+knitr::kable(Tabla,caption ="Estimadores puntuales de media y varianza de % Mortalidad por Tenacibaculosis para los tipos de alimentos")
+```
+
+
+```{r Análisis estadístico, echo=TRUE}
 
 res.aov1 <- lm(Mort_Tena ~ Alimento, data = tidy_Tena)
 anova(res.aov1)
