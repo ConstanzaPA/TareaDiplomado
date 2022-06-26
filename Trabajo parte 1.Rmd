@@ -151,11 +151,11 @@ id2 <- plot.design(Dieta$Mortalidad~Dieta$Unidad*Dieta$Dieta,xlab="Factores", yl
 ```{r, Tabla promedio  varianza ,echo=TRUE}
 # Promedio y varianza de la variable Mortalidad total para los tipos de Dieta. 
 
-Tabla = Dieta %>% group_by(Dieta) %>%
+Tabla1 = Dieta %>% group_by(Dieta) %>%
 summarize(N= n(), Mean = mean(Mortalidad),
           Variance= var(Mortalidad))
 
-knitr::kable(Tabla,caption ="Estimadores puntuales de media y varianza de Mortalidad total para los tipos de Dieta")
+knitr::kable(Tabla1,caption ="Estimadores puntuales de media y varianza de Mortalidad total para los tipos de Dieta")
 ```
 
 
