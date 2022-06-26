@@ -22,6 +22,8 @@ knitr::opts_chunk$set(echo = FALSE)
 library(knitr)
 library(ggplot2)
 library(dplyr)
+library(tidyr)
+library(tidyselect)
 library(readxl)
 library(tidyverse)
 library(kableExtra)
@@ -67,22 +69,18 @@ En este trabajo se observan las variables obtenidas durante los últimos cinco a
 ```{r Preparar datos, include=FALSE, comment=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 
-#Cargar la base de datos en el objeto Tena:
-Tena <- read_excel("Tenacibaculosis.xlsx", sheet=1,na="NA")
-Tena <- na.omit(Tena)
-head(Tena)
-
-#Ordenar Tena creando un objeto tidy_Tena con las variables de interés:
-tidy_Tena <- select(Tena,Unidad,Alimento,Ingreso,Peso_cosecha,Mortalidad)
-head(tidy_Tena)
+#Cargar la base de datos en el objeto Dietas:
+Dieta <- read_excel("Dieta.xlsx", sheet=1,na="NA")
+Dieta <- na.omit(Dieta)
+head(Dieta)
 
 #Explorar si las variables son números o carácteres:
-str(tidy_Tena)
+str(Dieta)
 
-#Transformar Unidad y Alimento a factor usando as.factor, luego visualizar que Unidad y Alimento estén transformados adecuadamente a factor y que los datos están balanceados:
-tidy_Tena$Unidad <- as.factor(tidy_Tena$Unidad)
-tidy_Tena$Alimento <- as.factor(tidy_Tena$Alimento)
-summary(tidy_Tena)
+#Transformar Unidad y Dieta a factor usando as.factor, luego visualizar que Unidad y Dieta estén transformados adecuadamente a factor y que los datos están balanceados:
+Dieta$Unidad <- as.factor(Dieta$Unidad)
+Dieta$Dieta <- as.factor(Dieta$Dieta)
+summary(Dieta)
 
 ```
 
@@ -95,45 +93,45 @@ My_Theme = theme(axis.title.x = element_text(size = 18),
   axis.title.y = element_text(size = 18),
   axis.text.y = element_text(size = 18))
 
-hist_Tena <- ggplot(tidy_Tena,aes(Mortalidad))+
+hist_Mort <- ggplot(Dieta,aes(Mortalidad))+
   geom_histogram(fill="lightblue",color="black",bins=10)
 
-blot_Tena <- ggplot(tidy_Tena,aes(y=Mortalidad,x=Alimento))+
+blot_Dieta <- ggplot(Dieta,aes(y=Mortalidad,x=Dieta))+
   geom_boxplot(fill="lightgreen",outlier.colour = "red")+
-  labs(y="Mortalidad total",x="Tipo de Alimento")
+  labs(y="Mortalidad total",x="Tipo de Dieta")
 
 theme_classic()
 
 ```
 
-**Frecuencia de mortalidad por Tenacibaculosis**
-```{r Gráfico 1, warning=FALSE, message=FALSE, out.width = '70%', fig.align='center',fig.cap="Gráficvo1"}
+**Frecuencia de mortalidad total**
+```{r Gráfico 1, warning=FALSE, message=FALSE, out.width = '70%', fig.align='center',fig.cap="Mortalidad total"}
 
-hist_Tena+My_Theme
+hist_Mort+My_Theme
 
 ```
 
 ## Desarrollo
 
-**Tipo de alimento vs mortalidad por Tenacibaculosis**
+**Tipo de dieta vs mortalidad total**
 ```{r blot, warning=FALSE, message=FALSE, out.width = '70%', fig.align='center'}
 knitr::opts_chunk$set(echo = FALSE)
 
-blot_Tena+My_Theme
+blot_Dieta+My_Theme
 ```
 
 
 ## Desarrollo
 ```{r, Tabla media y varianza, warning=FALSE, message=FALSE, out.width = '70%', fig.align='center'}
 
-Tabla1 = tidy_Tena %>% group_by(Alimento) %>%
+Tabla1 = Dieta %>% group_by(Dieta) %>%
 summarize(N= n(), Mean = mean(Mortalidad),
           Variance= var(Mortalidad))
 
 ```
 
 
-**Media y varianza de mortalidad causada por Tenacibaculosis por tipo de alimento**
+**Media y varianza de mortalidad total por tipo de dieta**
 
 ```{r, Tabla 1, echo=TRUE, out.width = '70%', fig.align='center'}
 
@@ -144,7 +142,7 @@ knitr::kable(Tabla1)
 
 ```{r Modelo lineal genral nulo, message=FALSE, out.width = '70%', fig.align='center'}
 
-chisq.test(tidy_Tena, correct = FALSE)
+chisq.test(Dieta, correct = FALSE)
 
 
 ```
