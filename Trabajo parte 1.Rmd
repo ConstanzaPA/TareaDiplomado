@@ -145,17 +145,6 @@ grid.arrange(blot_ing, blot_peso, blot_mort, ncol=1, nrow =3)
 Figura 3. En los diagramas de caja y bigotes se representa el primer cuartil y tercer cuartil, la mediana con la línea central y los valores atípicos con los puntos de color rojo. Se observa que la mediana del número de peces ingresados y el peso de cosecha promedio por Dieta son muy cercanos, respectivamente. Por otro lado, la mediana del porcentaje de mortalidad por Dieta difieren. 
 
 
-```{r, Tabla media y varianza % Mortalidad por Dieta ,echo=TRUE}
-# Promedio y varianza de la variable Mortalidad total para los tipos de Dieta. 
-
-Tabla3 = Salar %>% group_by(Dieta) %>%
-summarize(N= n(), Mean = mean(P.Mortalidad),
-          Variance= var(P.Mortalidad))
-
-knitr::kable(Tabla3,digits=2,caption ="Media y varianza de porcentaje de mortalidad por Dieta")
-```
-
-
 
 **1.4.** **Gráficos de interacción entre variables y factores:**
 
@@ -175,6 +164,18 @@ id2 <- plot.design(Salar$P.Mortalidad ~ Salar$Unidad*Salar$Dieta,xlab="Factores"
 par(mfrow=c(2,2))
 
 ```
+
+**1.5** **Gráfico de coeficiente de correlación de Spearmen**
+
+
+```{r, echo=TRUE}
+
+
+
+```
+
+
+
 **2.** **Hipótesis:**
 
 - Hipótesis nula (H0): las dieta tiene relación con la mortalidad del Salmón del Atlántico.
@@ -184,15 +185,17 @@ par(mfrow=c(2,2))
 
 **3.** **Evaluación de los supuestos**
 
-Se analizaran los siguientes supuestos:
+Se analizan los siguientes supuestos:
 
 1) Independencia de las varibales: las observaciones se obtienen de jaulas independientes.
+
 2) Homocedasticidad: con el gráfico de diagnóstico de un modelo lineal general se determinará la homocedasticidad.
+
 3) Normalidad: en el histograma de porcetaje de mortalidad se observa que su distribución no es normal, ya que tiene distribución hacia la derecha. También se evaluará con el gráfico de un modelo lineal general. 
 
 A continuación, en Figura 5 se muestran los gráficos de diagnóstico de un modelo lineal generados para evaluar la homocedasticidad y normalidad de los residuos.  
 
-```{r Gráficos de evaluación de los supuestos ,echo=TRUE}
+```{r Gráficos de evaluación de los supuestos, echo=TRUE}
 
 # Gráfico de diagnóstico de un modelo lineal para evaluar la homocedasticidad y normalidad de los residuos
 m1 = lm(Salar$P.Mortalidad ~ Salar$Dieta)

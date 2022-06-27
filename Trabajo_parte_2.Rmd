@@ -78,7 +78,7 @@ summary(Salar)
 
 **2.** **Descripción de la variación de las variables:**
 
-Histogramas: las tres variables no tienen distribución normal.
+1) Histogramas: las tres variables no tienen distribución normal.
 
 ```{r Histogramas,warning=FALSE, message=FALSE, out.width = '70%', fig.align='center'}
 #Observar el comportamiento de las variables en estudio usando histogramas y boxplot (valor atípico se muestra en punto de color rojo):
@@ -101,9 +101,9 @@ grid.arrange(hist_ing, hist_peso, hist_mort, ncol=1, nrow =3)
 
 ## Análisis exploratorio de los datos
 
-**3.** **Determinar la relación entre variables y factores:**
+**2.** **Descripción de la variación de las variables:**
 
-1) Boxplot de las variables por factor Unidad: 
+2) Boxplot de las variables por factor Unidad: 
 
 ```{r ,warning=FALSE, message=FALSE, out.width = '70%', fig.align='center'}
 
@@ -112,14 +112,15 @@ bp <-ggplot(data=Salar, aes(x=Unidad,y=Peso_cosecha))+geom_boxplot()
 bm <-ggplot(data=Salar, aes(x=Unidad,y=P.Mortalidad))+geom_boxplot()
 
 grid.arrange(bi, bp, bm, ncol=1, nrow =3)
+
 ```
 
 
 ## Análisis exploratorio de los datos
 
-**3.** **Determinar la relación entre variables y factores:**
+**2.** **Descripción de la variación de las variables:**
 
-2) Diagrama de caja y bigotes de las variables por factor Dieta: solo en el porcentaje de mortalidad según el tipo de dieta difieren las medianas y hay valores atípicos (puntos de color rojo).
+3) Diagrama de caja y bigotes de las variables por factor Dieta: solo en el porcentaje de mortalidad según el tipo de dieta difieren las medianas y hay valores atípicos (puntos de color rojo).
 
 ```{r Boxplot variables por tipo de Dieta ,warning=FALSE, message=FALSE, out.width = '70%', fig.align='center'}
 
@@ -136,13 +137,15 @@ blot_mort <- ggplot(Salar,aes(y=P.Mortalidad,x=Dieta))+
   labs(y="% Mortalidad",x="Tipo de Dieta")
 
 grid.arrange(blot_ing, blot_peso, blot_mort, ncol=1, nrow =3)
+
 ```
 
 
 ## Análisis exploratorio de los datos
 
-**Gráficos de interacción:**
-En las siguientes figuras se muestran los gráficos de interacción entre cada variable cuantitativa y los factores Unidad y Dieta.
+**3.** **Determinar la relación entre variables y factores:**
+
+1) Gráficos de interacción:
 
 ```{r Gráficos blot interacción ,warning=FALSE, message=FALSE, out.width = '70%', fig.align='center'}
 #Establecer relación entre variables cuantitativas y factores usando gráficas de correlación, boxplot, interacción o de tamaño de los efectos:
@@ -151,75 +154,57 @@ ip1 <- interaction.plot(Salar$Unidad,Salar$Dieta, Salar$Peso_cosecha,trace.label
  
 ip2 <- interaction.plot(Salar$Unidad,Salar$Dieta, Salar$Mortalidad,trace.label="Dieta",fun=mean,xlab="Unidad",ylab=" % Mortalidad",type="b", col= c("black", "blue"),pch=c(19,17))
 
-```
-
-## Desarrollo
-```{r Gráficos design interacción ,warning=FALSE, message=FALSE, out.width = '70%', fig.align='center'}
 id1 <- plot.design(Salar$Peso_cosecha~Salar$Unidad*Salar$Dieta,xlab="Factores", ylab="Peso cosecha")
  
 id2 <- plot.design(Salar$P.Mortalidad~Salar$Unidad*Salar$Dieta,xlab="Factores", ylab="% Mortalidad")
 
 ```
 
+## ## Análisis exploratorio de los datos
 
-```{r Gráficos exploratorios, warning=FALSE, message=FALSE, out.width = '70%', fig.align='center'}
+**3.** **Determinar la relación entre variables y factores:**
+
+2) Gráfico coeficiente de correlación de Spearmen:
+
+```{r Gráfico correlación ,warning=FALSE, message=FALSE, out.width = '70%', fig.align='center'}
 
 My_Theme = theme(axis.title.x = element_text(size = 18),
   axis.text.x = element_text(size = 18),
   axis.title.y = element_text(size = 18),
   axis.text.y = element_text(size = 18))
 
-hist_Mort <- ggplot(Salar,aes(P.Mortalidad))+
-  geom_histogram(fill="lightblue",color="black",bins=10)
 
-blot_Dieta <- ggplot(Salar,aes(y=P.Mortalidad,x=Dieta))+
-  geom_boxplot(fill="lightblue",outlier.colour = "red")+
-  labs(y="% Mortalidad",x="Tipo de Dieta")
-
-theme_classic()
-
-```
-
-## Desarrollo
-
-**Frecuencia de mortalidad**
-
-Figura 1. Mortalidad es una variable discreta que tiene comportamiento de distribución binomial con asimetría a la derecha.
-```{r Gráfico 1, warning=FALSE, message=FALSE, out.width = '70%', fig.align='center',fig.cap="Frecuencia de % Mortalidad"}
-
-hist_Mort+My_Theme
 
 ```
 
 
-
-
-
-## Desarrollo
-
-**Tipo de dieta vs porcentaje de mortalidad**
-
-Figura 2.
-```{r blot, warning=FALSE, message=FALSE, out.width = '70%', fig.align='center'}
-knitr::opts_chunk$set(echo = FALSE)
-
-blot_Dieta+My_Theme
-```
- 
 
 ## Hipótesis
 
-- **Hipótesis nula (H0):** no hay relación entre la dieta y la mortalidad de Salmón del Atlántico.
+- **Hipótesis nula (H0):** las dieta tiene relación con la mortalidad del Salmón del Atlántico.
 
-- **Hipotesis alternativa (H1):** si hay relación entre las dietas y la mortalidad de Salmón del Atlántico.
+- **Hipotesis alternativa (H1):** la dieta no tiene relación con la mortalidad.
+
+
+## Evaluación de los supuestos
+
+Se analizan los siguientes supuestos:
+
+1) Independencia de las varibales: las observaciones se obtienen de jaulas independientes.
+
+2) Homocedasticidad: con el gráfico de diagnóstico de un modelo lineal general se determinará la homocedasticidad.
+
+3) Normalidad: en el histograma de porcetaje de mortalidad se observa que su distribución no es normal, ya que tiene distribución hacia la derecha. También se evaluará con el gráfico de un modelo lineal general. 
 
 
 ## Evaluación de los supuestos
 
 ```{r Grafico evaluación supuestos, warning=FALSE, message=FALSE, out.width = '70%', fig.align='center' }
 # Gráfico de diagnóstico de un modelo lineal para evaluar la homocedasticidad y normalidad de los residuos
+
 m1 = lm(Salar$P.Mortalidad ~ Salar$Dieta)
 plot(m1)
+
 
 #Gráfico 1: evaluación de la homocedasticidad. La línea roja muestra el promedio de los valores. Se observa que a medida que en el eje x aumentan los valores ajustados hacia la derecha, aumentan la dispersión de los residuales. Esto indica que no hay homocedasticidad.
 # Gráfico 2: evaluación de la normalidad. La línea puntiada indica la distribución normal. Se observa desviación de los residuales en los cuantiles teóricos de la distribución normal. Es decir, no hay distribución normal.
