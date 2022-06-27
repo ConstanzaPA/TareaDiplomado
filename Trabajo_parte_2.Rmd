@@ -41,13 +41,12 @@ Debido a su impacto en la salud de Salmón del Atlántico, es importante evaluar
 
 **Objetivo:** 
 
-Analizar si la dieta afecta el porcentaje de mortalidad de Salmón Atlántico en 136 jaulas (Unidad) en centros de agua mar durante los últimos 3 años.
+Analizar si la dieta afecta la mortalidad de Salmón Atlántico en 136 jaulas (Unidad) en centros de agua mar durante los últimos 3 años.
 
 
-
+## Análisis exploratorio de los datos
 
 ```{r Preparar datos, include=FALSE, comment=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
 
 #Cargar la base de datos en el objeto Dietas:
 Salar <- read_excel("Salar.xlsx", sheet=1,na="NA")
@@ -64,33 +63,22 @@ summary(Salar)
 
 ```
 
+**1.** **Balanceo de datos:**
 
-## Desarrollo
+1) Se filtran las dos dietas con mayor y similar número de n muestreal (BES1  y BS1).
 
-**Resumen de estadística descriptiva**
+2) Se calcula el porcentaje de mortalidad (P.Mortalidad) para usar como variable de estudio.
 
-**_Balanceo de datos:_**
+3) Se explora si las variables son números o carácteres y luego se transforman las variables Unidad y Dieta en factores.
 
-- se filtran las dos dietas con mayor y similar número de n muestreal (BES1  y BS1).
-
-- se calcula el porcentaje de mortalidad (P.Mortalidad) para usar como variable de estudio.
-
-**Tabla
-
-```{r, Tabla media y varianza, warning=FALSE, message=FALSE, out.width = '70%', fig.align='center'}
-
-Tabla1 = Salar %>% group_by(Dieta) %>%
-summarize(N= n(), Mean = mean(P.Mortalidad),
-          Variance= var(P.Mortalidad))
-
-knitr::kable(Tabla1,digits=2)
-```
+4) Se revisa que los datos estén balanceados y se visualiza la mediana, mínimo, máximo, primer cuartirl y tercer cuartil de las variables.
 
 
-## Desarrollo
+## Análisis exploratorio de los datos
 
-**Gráficos de histogramas y boxplot:**
-Se describe la variación de cada variable de estudio usando histogramas y boxplot. En la Figura 1 se muestran los histogramas de ingreso, peso cosecha y mortalidad total. Mientras que en la Figura 2 y 3 se muestran los boxplot de las mismas variables por Unidad y tipo de Dieta respectivamente.
+**2.** **Descripción de la variación de las variables:**
+
+Histogramas: las tres variables no tienen distribución normal.
 
 ```{r Histogramas,warning=FALSE, message=FALSE, out.width = '70%', fig.align='center'}
 #Observar el comportamiento de las variables en estudio usando histogramas y boxplot (valor atípico se muestra en punto de color rojo):
@@ -111,9 +99,11 @@ grid.arrange(hist_ing, hist_peso, hist_mort, ncol=1, nrow =3)
 
 ```
 
-Figura 1.
+## Análisis exploratorio de los datos
 
-## Desarrollo
+**3.** **Determinar la relación entre variables y factores:**
+
+1) Boxplot de las variables por factor Unidad: 
 
 ```{r ,warning=FALSE, message=FALSE, out.width = '70%', fig.align='center'}
 
@@ -123,9 +113,13 @@ bm <-ggplot(data=Salar, aes(x=Unidad,y=P.Mortalidad))+geom_boxplot()
 
 grid.arrange(bi, bp, bm, ncol=1, nrow =3)
 ```
-Figura 2.
 
-## Desarrollo
+
+## Análisis exploratorio de los datos
+
+**3.** **Determinar la relación entre variables y factores:**
+
+2) Diagrama de caja y bigotes de las variables por factor Dieta: solo en el porcentaje de mortalidad según el tipo de dieta difieren las medianas y hay valores atípicos (puntos de color rojo).
 
 ```{r Boxplot variables por tipo de Dieta ,warning=FALSE, message=FALSE, out.width = '70%', fig.align='center'}
 
@@ -143,9 +137,9 @@ blot_mort <- ggplot(Salar,aes(y=P.Mortalidad,x=Dieta))+
 
 grid.arrange(blot_ing, blot_peso, blot_mort, ncol=1, nrow =3)
 ```
-Figura 3.
 
-## Desarrollo
+
+## Análisis exploratorio de los datos
 
 **Gráficos de interacción:**
 En las siguientes figuras se muestran los gráficos de interacción entre cada variable cuantitativa y los factores Unidad y Dieta.
