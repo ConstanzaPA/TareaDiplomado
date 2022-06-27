@@ -1,5 +1,5 @@
 ---
-title: "Evaluación de la dieta en la sobrevivencia del Salmón del Atlántico"
+title: "Evaluación de la dieta en la mortalidad del Salmón del Atlántico"
 author: "Constanza Pino Ajenjo"
 date: "`r Sys.Date()`"
 output:
@@ -43,14 +43,6 @@ Debido a su impacto en la salud de Salmón del Atlántico, es importante evaluar
 
 Analizar si la dieta afecta el porcentaje de mortalidad de Salmón Atlántico en 136 jaulas (Unidad) en centros de agua mar durante los últimos 3 años.
 
-
-## Introducción
-
-**Hipótesis:**
-
-- **Hipótesis nula (H0):** no hay relación entre la dieta y la mortalidad de Salmón del Atlántico.
-
-- **Hipotesis alternativa (H1):** si hay relación entre las dietas y la mortalidad de Salmón del Atlántico.
 
 
 
@@ -196,7 +188,7 @@ theme_classic()
 
 ## Desarrollo
 
-**Frecuencia de mortalidad total**
+**Frecuencia de mortalidad**
 
 Figura 1. Mortalidad es una variable discreta que tiene comportamiento de distribución binomial con asimetría a la derecha.
 ```{r Gráfico 1, warning=FALSE, message=FALSE, out.width = '70%', fig.align='center',fig.cap="Frecuencia de % Mortalidad"}
@@ -221,8 +213,14 @@ blot_Dieta+My_Theme
 ```
  
 
+## Hipótesis
 
-## Desarrollo
+- **Hipótesis nula (H0):** no hay relación entre la dieta y la mortalidad de Salmón del Atlántico.
+
+- **Hipotesis alternativa (H1):** si hay relación entre las dietas y la mortalidad de Salmón del Atlántico.
+
+
+## Evaluación de los supuestos
 
 ```{r Grafico evaluación supuestos, warning=FALSE, message=FALSE, out.width = '70%', fig.align='center' }
 # Gráfico de diagnóstico de un modelo lineal para evaluar la homocedasticidad y normalidad de los residuos
@@ -235,13 +233,15 @@ plot(m1)
 
 
 
-## Desarrollo
+## Análisis de datos
 
 ```{r}
 
 
 
 ```
+
+
 
 
 ## Conclusión

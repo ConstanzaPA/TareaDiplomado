@@ -187,8 +187,8 @@ par(mfrow=c(2,2))
 Se analizaran los siguientes supuestos:
 
 1) Independencia de las varibales: las observaciones se obtienen de jaulas independientes.
-2) Homocedasticidad:
-3) Normalidad:
+2) Homocedasticidad: con el gráfico de diagnóstico de un modelo lineal general se determinará la homocedasticidad.
+3) Normalidad: en el histograma de porcetaje de mortalidad se observa que su distribución no es normal, ya que tiene distribución hacia la derecha. También se evaluará con el gráfico de un modelo lineal general. 
 
 A continuación, en Figura 5 se muestran los gráficos de diagnóstico de un modelo lineal generados para evaluar la homocedasticidad y normalidad de los residuos.  
 
@@ -217,7 +217,7 @@ m2 = glm(Salar$P.Mortalidad ~ Salar$Dieta,
                 family= poisson(link="log"))
 summary(m2)
 
-#Anova
+#Anova con Chi:
 anova(m2, test ='Chisq')
 
 #Comparar los AIC de los modelos:
