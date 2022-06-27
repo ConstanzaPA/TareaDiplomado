@@ -1,5 +1,5 @@
 ---
-title: "Evaluación de la dieta en mortalidad total del Salmón del Atlántico"
+title: "Evaluación de la dieta en la sobrevivencia del Salmón del Atlántico"
 author: "Constanza Pino Ajenjo"
 date: "`r Sys.Date()`"
 output: html_document
@@ -8,159 +8,227 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
-
 library(ggplot2)
 library(dplyr)
 library(readxl)
-library(tidyverse)
 library(kableExtra)
 library(pander)
 library(DT)
 library(gridExtra)
+library(psych)
+library(car)
+library(readr)
+library(lmtest)
+library(boot)
+library(stats)
+library(stats4)
+
 ```
 
-##Introducción
+**Introducción**
 
-**Descripción del problema a resolver:** 
+**1.** **Descripción del problema a resolver:** 
 
 Debido a su impacto en la salud de Salmón del Atlántico, es importante analizar la influencia de dos tipos de dietas en la mortalidad en los centros de cultivo en agua de mar.
 
-##Introducción
 
-**Datos analizados:** 
+**2.** **Datos analizados:** 
 Se analiza los resultados de las siguientes variables observadas en 186 jaulas (Unidad) en centros de agua mar con 2 tipos de Dieta (Dieta) durante los últimos 3 años: 
 
 - número de ingreso de peces (Ingreso)
 
 - peso promedio de los peces cosechados en kilogramos (Peso_cosecha)
 
-- número de mortalidad total (Mortalidad) 
+- porcentaje de mortalidad (Mortalidad) 
 
-##Introducción
 
-**Hipótesis:**
 
-- Hipótesis nula (H0): los dos tipos de Dieta son iguales en la mortalidad de Salmón del Atlántico.
+**Desarollo**
 
-- Hipotesis alternativa (H1): los dos tipos de Dieta son distintos en la mortalidad de Salmón del Atlántico.
+**1.** **Exploración y depuración de los datos**
 
+**1.1** **Cargar la base de datos y balancear los datos:**
+
+a) se filtran las dos dietas con mayor y similar número de n muestreal (BES1  y BS1).
+
+b) se calcula el porcentaje de mortalidad (P.Mortalidad) para usar como variable de estudio.
 
 
 ```{r Preparar datos,echo=TRUE}
 
-#Cargar la base de datos en el objeto Dieta:
-Dieta <- read_excel("Dieta.xlsx", sheet=1,na="NA")
-Dieta <- na.omit(Dieta)
-head(Dieta)
+#Cargar la base de datos en el objeto Salar:
+Salar <- read_excel("Salar.xlsx", sheet=1,na="NA")
+Salar <- na.omit(Salar)
+head(Salar)
 
 #Explorar si las variables son números o carácteres:
-str(Dieta)
+str(Salar)
 
 #Transformar Unidad y Dieta a factor usando as.factor, luego visualizar que Unidad y Dieta estén transformados adecuadamente a factor y que los datos están balanceados:
-Dieta$Unidad <- as.factor(Dieta$Unidad)
-Dieta$Dieta <- as.factor(Dieta$Dieta)
-summary(Dieta)
+Salar$Unidad <- as.factor(Salar$Unidad)
+Salar$Dieta <- as.factor(Salar$Dieta)
+summary(Salar)
 
 ```
-**Tablas de resumen:**
-En la tabla 1 se muestra la base de datos que se utiliza en este trabajo y, luego, en la tabla 2 está un resumen de estadística descriptiva.
+
+**1.2.** **Tablas de resumen:**
+
+En la Tabla 1 se muestra la base de datos que se utiliza en este trabajo y, luego, en la Tabla 2 está un resumen de estadística descriptiva.
 
 ```{r Tablas de datos y estadística, echo=TRUE}
 
 #Generar una tabla con la base de datos de Dieta con función datatable:
-DT::datatable(Dieta,caption="Tabla 1. Base de datos de tipo de dieta, número de peces ingresados, peso cosecha y número de mortalidad total por Unidad")
+DT::datatable(Salar,caption="Tabla 1. Base de datos")
 
 #Resumen de estadística descriptiva con función pander:
-pander(summary(Dieta,caption="Tabla 2. Resumen data frame"))
+pander(summary(Salar,caption="Tabla 2. Resumen data frame"))
 
 ```
 
-**Gráficos de histogramas y boxplot:**
-Se describe la variación de cada variable de estudio usando histogramas y boxplot. En la Figura 1 se muestran los histogramas de ingreso, peso cosecha y mortalidad total. Mientras que en la Figura 2 y 3 se muestran los boxplot de las mismas variables por Unidad y tipo de Dieta respectivamente.
+
+
+**1.3.** **Gráficos de histogramas y boxplot:**
+
+Se describe la variación de cada variable de estudio usando histogramas y boxplot. En la Figura 1 se muestran los histogramas de ingreso, peso de cosecha promedio (kg) y porcentaje de mortalidad. Mientras que en la Figura 2 y 3 se muestran los boxplot de las mismas variables por Unidad y Dieta respectivamente. En la Tabla 3
 
 ```{r Histogramas, echo=TRUE}
 #Observar el comportamiento de las variables en estudio usando histogramas y boxplot (valor atípico se muestra en punto de color rojo):
 
-hist_ing <- ggplot(Dieta,aes(Ingreso))+
+hist_ing <- ggplot(Salar,aes(Ingreso))+
   geom_histogram(fill="lightblue",color="black",bins=10)+
   labs(title = "Número de peces ingresados")
 
-hist_peso <- ggplot(Dieta,aes(Peso_cosecha))+
-  geom_histogram(fill="lightblue",color="black",bins=12)+
-  labs(title = "Peso promedio de cosecha")
+hist_peso <- ggplot(Salar,aes(Peso_cosecha))+
+  geom_histogram(fill="lightblue",color="black",bins=8)+
+  labs(title = "Peso de cosecha promedio")
 
-hist_mort <- ggplot(Dieta,aes(Mortalidad))+
-  geom_histogram(fill="lightblue",color="black",bins=12)+
-  labs(title = "Mortalidad total")
+hist_mort <- ggplot(Salar,aes(P.Mortalidad))+
+  geom_histogram(fill="lightblue",color="black",bins=10)+
+  labs(title = "Porcentaje de mortalidad")
 
 grid.arrange(hist_ing, hist_peso, hist_mort, ncol=1, nrow =3)
 
 ```
-Figura 1.
+
+Figura 1. En esta figura se observa que el histograma de número de peces ingresado no tiene una distribución normal, el histograma de peso de cosecha promedio tiene una distribución hacia la izquierda y el histograma de porcentaje de mortalidad tiene una distribución hacia la derecha. 
+
 
 ```{r ,echo=TRUE}
 
-bi <-ggplot(data=Dieta, aes(x=Unidad,y=Ingreso))+geom_boxplot()
-bp <-ggplot(data=Dieta, aes(x=Unidad,y=Peso_cosecha))+geom_boxplot()
-bm <-ggplot(data=Dieta, aes(x=Unidad,y=Mortalidad))+geom_boxplot()
+bi <-ggplot(data=Salar, aes(x=Unidad,y=Ingreso))+geom_boxplot()
+bp <-ggplot(data=Salar, aes(x=Unidad,y=Peso_cosecha))+geom_boxplot()
+bm <-ggplot(data=Salar, aes(x=Unidad,y=P.Mortalidad))+geom_boxplot()
 
 grid.arrange(bi, bp, bm, ncol=1, nrow =3)
 ```
-Figura 2.
 
-```{r Boxplot variables por tipo de Dieta ,echo=TRUE}
+Figura 2. Se observa que el número de peces ingresados por jaula son distintos por Centro de agua de mar, mientras que gran parte del peso de cosecha promedio está en un rango entre 4 y 6 kg. En cuanto al porcentaje de mortalidad se encuentra en un rango entre 5% y 50%.   
 
-blot_ing <- ggplot(Dieta,aes(y=Ingreso,x=Dieta))+
+
+```{r Boxplot variables por Dieta ,echo=TRUE}
+
+blot_ing <- ggplot(Salar,aes(y=Ingreso,x=Dieta))+
   geom_boxplot(fill="lightgreen",outlier.colour = "red")+
-  labs(y="Ingreso",x="Tipo de Dieta")
+  labs(y="Ingreso",x="Dieta")
 
-blot_peso <- ggplot(Dieta,aes(y=Peso_cosecha,x=Dieta))+
+blot_peso <- ggplot(Salar,aes(y=Peso_cosecha,x=Dieta))+
   geom_boxplot(fill="lightgreen",outlier.colour = "red")+
-  labs(y="Peso cosecha",x="Tipo de Dieta")
+  labs(y="Peso cosecha",x="Dieta")
 
-blot_mort <- ggplot(Dieta,aes(y=Mortalidad,x=Dieta))+
+blot_mort <- ggplot(Salar,aes(y=P.Mortalidad,x=Dieta))+
   geom_boxplot(fill="lightgreen",outlier.colour = "red")+
-  labs(y="Mortalidad total",x="Tipo de Dieta")
+  labs(y="% Mortalidad",x="Dieta")
 
 grid.arrange(blot_ing, blot_peso, blot_mort, ncol=1, nrow =3)
 ```
-Figura 3.
+
+Figura 3. En los diagramas de caja y bigotes se representa el primer cuartil y tercer cuartil, la mediana con la línea central y los valores atípicos con los puntos de color rojo. Se observa que la mediana del número de peces ingresados y el peso de cosecha promedio por Dieta son muy cercanos, respectivamente. Por otro lado, la mediana del porcentaje de mortalidad por Dieta difieren. 
 
 
-**Gráficos de interacción:**
-En las siguientes figuras se muestran los gráficos de interacción entre cada variable cuantitativa y los factores Unidad y Dieta.
-
-```{r Gráficos blot interacción ,echo=TRUE}
-#Establecer relación entre variables cuantitativas y factores usando gráficas de correlación, boxplot, interacción o de tamaño de los efectos:
-
-ip1 <- interaction.plot(Dieta$Unidad,Dieta$Dieta, Dieta$Peso_cosecha,trace.label="Dieta",fun=mean, xlab="Unidad",ylab="Peso cosecha",type="b", col= c("black", "blue"),pch=c(19,17))
- 
-ip2 <- interaction.plot(Dieta$Unidad,Dieta$Dieta, Dieta$Mortalidad,trace.label="Dieta",fun=mean,xlab="Unidad",ylab="Mortalidad total",type="b", col= c("black", "blue"),pch=c(19,17))
-
-```
-
-
-```{r Gráficos design interacción ,echo=TRUE}
-id1 <- plot.design(Dieta$Peso_cosecha~Dieta$Unidad*Dieta$Dieta,xlab="Factores", ylab="Peso cosecha")
- 
-id2 <- plot.design(Dieta$Mortalidad~Dieta$Unidad*Dieta$Dieta,xlab="Factores", ylab="Mortalidad total")
-
-```
-
-
-```{r, Tabla promedio  varianza ,echo=TRUE}
+```{r, Tabla media y varianza % Mortalidad por Dieta ,echo=TRUE}
 # Promedio y varianza de la variable Mortalidad total para los tipos de Dieta. 
 
-Tabla1 = Dieta %>% group_by(Dieta) %>%
-summarize(N= n(), Mean = mean(Mortalidad),
-          Variance= var(Mortalidad))
+Tabla3 = Salar %>% group_by(Dieta) %>%
+summarize(N= n(), Mean = mean(P.Mortalidad),
+          Variance= var(P.Mortalidad))
 
-knitr::kable(Tabla1,caption ="Estimadores puntuales de media y varianza de Mortalidad total para los tipos de Dieta")
+knitr::kable(Tabla3,digits=2,caption ="Media y varianza de porcentaje de mortalidad por Dieta")
 ```
 
 
-```{r Análisis estadístico, echo=TRUE}
 
+**1.4.** **Gráficos de interacción entre variables y factores:**
 
+En las siguiente Figura 4 se muestran los gráficos de interacción entre cada variable cuantitativa y los factores Unidad y Dieta.
+
+```{r Gráficos blot interacción y design interacción ,echo=TRUE}
+#Establecer relación entre variables cuantitativas y factores usando gráficas de correlación, boxplot, interacción o de tamaño de los efectos:
+
+ip1 <- interaction.plot(Salar$Unidad,Salar$Dieta, Salar$Peso_cosecha,trace.label="Dieta",fun=mean, xlab="Unidad",ylab="Peso cosecha",type="b", col= c("black", "blue"),pch=c(19,17))
+ 
+ip2 <- interaction.plot(Salar$Unidad,Salar$Dieta,Salar$P.Mortalidad,trace.label="Dieta",fun=mean,xlab="Unidad",ylab="% Mortalidad",type="b", col= c("black", "blue"),pch=c(19,17))
+
+id1 <- plot.design(Salar$Peso_cosecha ~ Salar$Unidad*Salar$Dieta,xlab="Factores", ylab="Peso cosecha")
+ 
+id2 <- plot.design(Salar$P.Mortalidad ~ Salar$Unidad*Salar$Dieta,xlab="Factores", ylab="% Mortalidad")
+
+par(mfrow=c(2,2))
 
 ```
+**2.** **Hipótesis:**
+
+- Hipótesis nula (H0): las dieta tiene relación con la mortalidad del Salmón del Atlántico.
+
+- Hipotesis alternativa (H1): la dieta no tiene relación con la mortalidad.
+
+
+**3.** **Evaluación de los supuestos**
+
+Se analizaran los siguientes supuestos:
+
+1) Independencia de las varibales: las observaciones se obtienen de jaulas independientes.
+2) Homocedasticidad:
+3) Normalidad:
+
+A continuación, en Figura 5 se muestran los gráficos de diagnóstico de un modelo lineal generados para evaluar la homocedasticidad y normalidad de los residuos.  
+
+```{r Gráficos de evaluación de los supuestos ,echo=TRUE}
+
+# Gráfico de diagnóstico de un modelo lineal para evaluar la homocedasticidad y normalidad de los residuos
+m1 = lm(Salar$P.Mortalidad ~ Salar$Dieta)
+plot(m1)
+
+```
+
+
+Figura 5. En el gráfico de Residuals vs Fitted se evalúa la homocedasticidad, donde la línea roja muestra el promedio de los valores. En este gráfico, se observa aumento de los valores ajustados hacia la derecha mientras aumenta la dispersión de los residuales indicando que no hay homocedasticidad. En el gráfico de cuantil-cuantil (Normal Q-Q) se determina si se cumple el supuesto de normalidad. La línea diagonal puntiada indica los cuantiles teóricos en la distribución normal. En este segundo gráfico se observa que la distribución de los residuos se desvía de la distribución normal teórica, debido a que los residuos se apartan de la diagonal.
+
+Estos gráficos de diagnóstico de homocedasticidad y normalidad muestran que no se cumplen ambos supuestos. Por lo tanto, un modelo lineal con distribución normal no es adecuado para analizar el porcentaje de mortalidad en función de la dieta. Se realizará un modelo lineal generalizado.
+
+
+**3.** **Análisis de datos**
+
+Se genera un modelo lineal generalizado con distribución de Poisson y link Long junto con anova del modelo. El p-value de Poisson y anova es menor a 0,05 (95% de confianza), por lo tanto se acepta la hipotesis nula (H0). Por ende, la variable dieta está asociada a la mortalidad.
+
+```{r Modelo lineal generalizado ,echo=TRUE}
+#Construcción de modelo con distribución de Poisson y link Long:
+
+m2 = glm(Salar$P.Mortalidad ~ Salar$Dieta, 
+                family= poisson(link="log"))
+summary(m2)
+
+#Anova
+anova(m2, test ='Chisq')
+
+#Comparar los AIC de los modelos:
+AIC(m2)
+
+```
+
+
+**4.** **Conclusión principal**
+
+Se concluye que la hipotesis nula es aceptada, o sea, la dieta está asociada a la  mortalidad del Salmón del Atlántico.
+
+A partir de este análisis se puede estudiar cual tipo de dieta tiene mayor relación en la mortalidad, creando nuevas hipotésis y sometiendo a otros modelos estadísticos.
+
