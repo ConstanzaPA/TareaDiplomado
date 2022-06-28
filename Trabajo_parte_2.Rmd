@@ -27,6 +27,7 @@ library(DT)
 library(gridExtra)
 library(stats)
 library(stats4)
+library(car)
 
 ```
 
@@ -122,7 +123,7 @@ grid.arrange(bi, bp, bm, ncol=1, nrow =3)
 
 3) Diagrama de caja y bigotes de las variables por factor Dieta: solo en el porcentaje de mortalidad según el tipo de dieta difieren las medianas y hay valores atípicos (puntos de color rojo).
 
-```{r Boxplot variables por tipo de Dieta ,warning=FALSE, message=FALSE, out.width = '50%', fig.align='center'}
+```{r Boxplot variables por tipo de Dieta ,warning=FALSE, message=FALSE, out.width = '70%', fig.align='center'}
 
 blot_ing <- ggplot(Salar,aes(y=Ingreso,x=Dieta))+
   geom_boxplot(fill="lightblue",outlier.colour = "red")+
@@ -152,7 +153,7 @@ grid.arrange(blot_ing, blot_peso, blot_mort, ncol=1, nrow =3)
 
 ip1 <- interaction.plot(Salar$Unidad,Salar$Dieta, Salar$Peso_cosecha,trace.label="Dieta",fun=mean, xlab="Unidad",ylab="Peso cosecha",type="b", col= c("black", "blue"),pch=c(19,17))
  
-ip2 <- interaction.plot(Salar$Unidad,Salar$Dieta, Salar$Mortalidad,trace.label="Dieta",fun=mean,xlab="Unidad",ylab=" % Mortalidad",type="b", col= c("black", "blue"),pch=c(19,17))
+ip2 <- interaction.plot(Salar$Unidad,Salar$Dieta, Salar$P.Mortalidad,trace.label="Dieta",fun=mean,xlab="Unidad",ylab=" % Mortalidad",type="b", col= c("black", "blue"),pch=c(19,17))
 
 id1 <- plot.design(Salar$Peso_cosecha~Salar$Unidad*Salar$Dieta,xlab="Factores", ylab="Peso cosecha")
  
@@ -160,29 +161,14 @@ id2 <- plot.design(Salar$P.Mortalidad~Salar$Unidad*Salar$Dieta,xlab="Factores", 
 
 ```
 
-## Análisis exploratorio de los datos
-
-**3.** **Determinar la relación entre variables y factores:**
-
-2) Gráfico de coeficiente de correlación de Spearman:
-
-```{r Gráfico correlación ,warning=FALSE, message=FALSE, out.width = '50%', fig.align='center'}
-
-
-Spearman
-
-
-
-
-```
-
 
 
 ## Hipótesis
 
-- **Hipótesis nula (H0):** las dieta tiene relación con la mortalidad del Salmón del Atlántico.
+- **Hipótesis nula (H0):** ausencia de correlación entre la dieta y la mortalidad del Salmón del Atlántico. 
 
-- **Hipotesis alternativa (H1):** la dieta no tiene relación con la mortalidad.
+- **Hipotesis alternativa (H1):** existencia de correlación entre la dieta y la mortalidad. 
+
 
 
 ## Evaluación de los supuestos
@@ -212,6 +198,7 @@ plot(m1)
 
 ## Análisis de datos
 
+ Modelo lineal generalizado con distribución de Poisson y link Long
 
 ```{r Modelo lineal generalizado, warning=FALSE, message=FALSE, out.width = '50%', fig.align='center'}
 
@@ -224,10 +211,25 @@ anova(m2, test ='Chisq')
 
 ```
 
+## Prueba de correlación
 
+Gráfico de coeficiente de correlación de t-test o Spearman:
+
+```{r Gráfico correlación ,warning=FALSE, message=FALSE, out.width = '70%', fig.align='center'}
+
+t.test(Salar$P.Mortalidad ~ Salar$Dieta, var.equal=TRUE, alternative = c("two.sided"))
+#p value es menor a 0,05 entonces se rechaza la H0.
+
+
+
+```
 
 
 ## Conclusión
+
+- Se concluye que la hipotesis nula es aceptada, o sea, la dieta está asociada a la  mortalidad del Salmón del Atlántico.
+
+- A partir de este análisis se puede estudiar cual tipo de dieta tiene mayor relación en la mortalidad, creando nuevas hipotésis y sometiendo a otros modelos estadísticos.
 
 ```{r}
 
