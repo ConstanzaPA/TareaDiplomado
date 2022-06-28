@@ -88,11 +88,11 @@ hist_ing <- ggplot(Salar,aes(Ingreso))+
   labs(title = "Número de peces ingresados")
 
 hist_peso <- ggplot(Salar,aes(Peso_cosecha))+
-  geom_histogram(fill="lightblue",color="black",bins=12)+
+  geom_histogram(fill="lightblue",color="black",bins=8)+
   labs(title = "Peso promedio de cosecha")
 
 hist_mort <- ggplot(Salar,aes(P.Mortalidad))+
-  geom_histogram(fill="lightblue",color="black",bins=12)+
+  geom_histogram(fill="lightblue",color="black",bins=10)+
   labs(title = "Mortalidad")
 
 grid.arrange(hist_ing, hist_peso, hist_mort, ncol=1, nrow =3)
@@ -160,7 +160,7 @@ id2 <- plot.design(Salar$P.Mortalidad~Salar$Unidad*Salar$Dieta,xlab="Factores", 
 
 ```
 
-## ## Análisis exploratorio de los datos
+## Análisis exploratorio de los datos
 
 **3.** **Determinar la relación entre variables y factores:**
 
@@ -188,13 +188,13 @@ My_Theme = theme(axis.title.x = element_text(size = 18),
 
 ## Evaluación de los supuestos
 
-Se analizan los siguientes supuestos:
+Se determinan los siguientes supuestos:
 
-1) Independencia de las varibales: las observaciones se obtienen de jaulas independientes.
+1) Independencia de las varibales: las observaciones son independientes debido a que se obtienen de distintas jaulas.
 
-2) Homocedasticidad: con el gráfico de diagnóstico de un modelo lineal general se determinará la homocedasticidad.
+2) Homocedasticidad: se evalua con gráfico de residuales versus ajustados (Residuals vs Fitted) en un modelo lineal.
 
-3) Normalidad: en el histograma de porcetaje de mortalidad se observa que su distribución no es normal, ya que tiene distribución hacia la derecha. También se evaluará con el gráfico de un modelo lineal general. 
+3) Normalidad: en el histograma del porcentaje de mortalidad se observa que su distribución no es normal, ya que tiene distribución hacia la derecha. La normalidad también se determina con gráfico de cuartil-cuartil (Normal Q-Q) en un modelo lineal. 
 
 
 ## Evaluación de los supuestos
