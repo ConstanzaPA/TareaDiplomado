@@ -162,15 +162,6 @@ id2 <- plot.design(Salar$P.Mortalidad~Salar$Unidad*Salar$Dieta,xlab="Factores", 
 ```
 
 
-
-## Hipótesis
-
-- **Hipótesis nula (H0):** ausencia de correlación entre la dieta y la mortalidad del Salmón del Atlántico. 
-
-- **Hipotesis alternativa (H1):** existencia de correlación entre la dieta y la mortalidad. 
-
-
-
 ## Evaluación de los supuestos
 
 Se determinan los siguientes supuestos:
@@ -194,11 +185,28 @@ plot(m1)
 
 ```
 
+## Hipótesis
+
+- **Hipótesis nula (H0):** ausencia de relación entre la dieta y la mortalidad del Salmón del Atlántico. 
+
+- **Hipotesis alternativa (H1):** existencia de relación entre la dieta y la mortalidad. 
 
 
-## Análisis de datos
 
- Modelo lineal generalizado con distribución de Poisson y link Long
+## Prueba de hipótesis
+
+1) Modelo lineal generalizado con Binomial:
+
+```{r Binomial,warning=FALSE, message=FALSE, out.width = '50%', fig.align='center'}
+
+mod_nulo <- glm(P.Mortalidad ~ 1, family= binomial, data = Salar)
+summary(mod_nulo)$coef %>% kable()
+
+mod_logit <- glm(P.Mortalidad ~ Dieta, family= binomial, data = Salar)
+summary(mod_logit)$coef %>% kable()
+```
+
+2) Modelo lineal generalizado con distribución de Poisson y link Long:
 
 ```{r Modelo lineal generalizado, warning=FALSE, message=FALSE, out.width = '50%', fig.align='center'}
 
@@ -211,16 +219,39 @@ anova(m2, test ='Chisq')
 
 ```
 
-## Prueba de correlación
-
-Gráfico de coeficiente de correlación de t-test o Spearman:
-
-```{r Gráfico correlación ,warning=FALSE, message=FALSE, out.width = '70%', fig.align='center'}
-
-t.test(Salar$P.Mortalidad ~ Salar$Dieta, var.equal=TRUE, alternative = c("two.sided"))
-#p value es menor a 0,05 entonces se rechaza la H0.
+## Prueba de hipótesis
 
 
+
+3) Prueba de hipótesis para la diferencia de las medias con Two samples t-test:
+
+```{r Prueba de hipotesis para la diferencia de las medias Two sample t-test ,warning=FALSE, message=FALSE, out.width = '70%', fig.align='center'}
+
+BS1 <- Salar[Salar$Dieta=="BS1", ]
+Prom_P.Mort_BS1 <- mean(BS1$P.Mortalidad)
+Var_P.Mort_BS1 <- var(BS1$P.Mortalidad)
+
+BES1 <- Salar[Salar$Dieta=="BES1", ]
+Prom_P.Mort_BES1 <- mean(BES1$P.Mortalidad)
+Var_P.Mort_BES1 <- var(BES1$P.Mortalidad)
+
+TablaPV <- data.frame(Prom_P.Mort_BS1, Var_P.Mort_BS1, Prom_P.Mort_BES1, Var_P.Mort_BES1)
+colnames(TablaPV) <- c("Media % Mort. BS1","Varianza % Mort. BS1", "Media % Mort. BES1","Varianza % Mort. BES1" )
+# Tabla con los datos
+knitr::kable(TablaPV,caption ="Medias y varianzas de las dietas BS1 y BES1", digits = 2)
+
+BS1 <- Salar[Salar$Dieta=="BS1", ]
+
+BES1 <- Salar[Salar$Dieta=="BES1", ]
+
+DM_Dieta <- t.test(x=BS1$P.Mortalidad, y=BES1$P.Mortalidad, paired=FALSE, var.equal=TRUE,
+       conf.level = 0.95)
+DM_Dieta
+
+IC_DM_Dieta <-DM_Dieta$conf.int
+IC_DM_Dieta
+
+pander::pander(DM_Dieta, caption = "Prueba de hipótesis para la diferencia del porcentaje de mortalidad entre BS1 y BES1")
 
 ```
 
