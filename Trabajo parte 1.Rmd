@@ -202,7 +202,9 @@ Estos gráficos de diagnóstico de homocedasticidad y normalidad muestran que no
 
 **4.** **Prueba de hipótesis**
 
-Se genera un modelo lineal generalizado Binomial junto con anova del modelo. El p-value y anova es menor a 0,05 (95% de confianza), por lo tanto se rechaza la hipotesis nula (H0). Por ende, la variable dieta está asociada a la mortalidad.
+Se genera un modelo lineal generalizado Binomial junto con anova del modelo. El p-value del modelo logit en las dos dietas (BS1 y BES1) es menor a 0,05 (95% de confianza), por lo tanto se rechaza la hipotesis nula (H0). Sin embargo, al comparar los valores AIC entre modelo nulo y modelo logit, el modelo nulo tiene menor valor que el modelo logit, o sea, el modelo nulo es mejor este que el modelo logit. 
+
+Por ende, solo considerando el modelo nulo, la variable dieta está asociada a la proporción de la mortalidad. Además, se requiere de otra u otras variables predictoras además de la dieta para poder explicar la proporción de la mortalidad.
 
 ```{r Modelo lineal generalizado Binomial ,echo=TRUE}
 
@@ -228,7 +230,7 @@ anova(mod_logit, test ='Chisq')
 
 - La hipotesis nula es rechazada, es decir, la dieta está asociada a la proporción de la mortalidad del Salmón del Atlántico.
 
-- Se debe incluir otra u otras variables predictoras además de la Dieta, para poder explicar la proporción de la mortalidad.
+- Se debe incluir otra u otras variables predictoras además de la dieta, para poder explicar la proporción de la mortalidad.
 
 - A partir de este análisis se puede estudiar cual tipo de dieta tiene mayor relación en la proporción de la mortalidad, creando nuevas hipotésis y sometiendo a otros modelos estadísticos.
 
