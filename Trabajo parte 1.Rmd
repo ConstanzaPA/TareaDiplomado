@@ -29,7 +29,7 @@ library(stats4)
 
 **1.** **Descripción del problema a resolver:** 
 
-Debido a su impacto en la salud de Salmón del Atlántico, es importante analizar la influencia de dos tipos de dietas en la mortalidad en los centros de cultivo en agua de mar.
+Debido a su impacto en la salud de Salmón del Atlántico, es importante analizar la influencia de la dieta en la mortalidad en los centros de cultivo en agua de mar.
 
 
 **2.** **Datos analizados:** 
@@ -98,16 +98,16 @@ Se describe la variación de cada variable de estudio usando histogramas y boxpl
 #Observar el comportamiento de las variables en estudio usando histogramas y boxplot (valor atípico se muestra en punto de color rojo):
 
 hist_ing <- ggplot(Salar,aes(Ingreso))+
-  geom_histogram(fill="lightblue",color="black",bins=10)+
+  geom_histogram(fill="lightblue",color="darkblue",bins=10)+
   labs(title = "Número de peces ingresados")
 
 hist_peso <- ggplot(Salar,aes(Peso_cosecha))+
-  geom_histogram(fill="lightblue",color="black",bins=8)+
+  geom_histogram(fill="lightblue",color="darkblue",bins=8)+
   labs(title = "Peso de cosecha promedio")
 
 hist_mort <- ggplot(Salar,aes(Prop_Mort))+
-  geom_histogram(fill="lightblue",color="black",bins=10)+
-  labs(title = "Porporción de mortalidad")
+  geom_histogram(fill="lightblue",color="darkblue",bins=10)+
+  labs(title = "Proporción de mortalidad")
 
 grid.arrange(hist_ing, hist_peso, hist_mort, ncol=1, nrow =3)
 
@@ -125,24 +125,23 @@ bm <-ggplot(data=Salar, aes(x=Unidad,y=Prop_Mort))+geom_boxplot()
 grid.arrange(bi, bp, bm, ncol=1, nrow =3)
 ```
 
-Figura 2. Se observa que el número de peces ingresados por jaula son distintos por Centro de agua de mar, mientras que gran parte del peso de cosecha promedio está en un rango entre 4 y 6 kg. En cuanto a la proporción de la mortalidad se encuentra en un rango entre 5% y 50%.   
+Figura 2. Se observa que el número de peces ingresados por jaula son distintos por Centro de agua de mar, mientras que gran parte del peso de cosecha promedio está en un rango entre 4 y 6 kg. En cuanto a la proporción de la mortalidad se encuentra en un rango entre 5% y 50%. 
 
 
 ```{r Boxplot variables por Dieta ,echo=TRUE}
 
-blot_ing <- ggplot(Salar,aes(y=Ingreso,x=Dieta))+
-  geom_boxplot(fill="lightgreen",outlier.colour = "red")+
-  labs(y="Ingreso",x="Dieta")
+blot_ing <- ggplot(Salar,aes(y=Ingreso,x=Dieta, color=Dieta))+
+  geom_boxplot()+theme(legend.position="none")
 
-blot_peso <- ggplot(Salar,aes(y=Peso_cosecha,x=Dieta))+
-  geom_boxplot(fill="lightgreen",outlier.colour = "red")+
-  labs(y="Peso cosecha",x="Dieta")
+blot_peso <- ggplot(Salar,aes(y=Peso_cosecha,x=Dieta, color=Dieta))+
+  geom_boxplot()+theme(legend.position="none")
 
-blot_mort <- ggplot(Salar,aes(y=Prop_Mort,x=Dieta))+
-  geom_boxplot(fill="lightgreen",outlier.colour = "red")+
-  labs(y="Proporción de mortalidad",x="Dieta")
+blot_mort <- ggplot(Salar,aes(y=Prop_Mort,x=Dieta, color=Dieta))+
+  geom_boxplot()+theme(legend.position="none")
 
 grid.arrange(blot_ing, blot_peso, blot_mort, ncol=1, nrow =3)
+
+
 ```
 
 Figura 3. En los diagramas de caja y bigotes se representa el primer cuartil y tercer cuartil, la mediana con la línea central y los valores atípicos con los puntos de color rojo. Se observa que la mediana del número de peces ingresados y el peso de cosecha promedio por Dieta son muy cercanos, respectivamente. Por otro lado, la mediana de la proporción de la mortalidad por Dieta difieren. 
@@ -169,28 +168,73 @@ id2 <- plot.design(Salar$Prop_Mort ~ Salar$Unidad*Salar$Dieta,xlab="Factores", y
 
 **2.** **Evaluación de los supuestos**
 
-Se analizan los siguientes supuestos:
+Se evalúa si se cumplen los tres supuestos con los siguientes métodos basados en análisis de residuales:  
 
-1) Independencia de las varibales: las observaciones se obtienen de jaulas independientes.
+```{r Gráfico modelo lineal del análisis de varianza  , echo=TRUE}
+#Anova en la forma de modelo lineal
 
-2) Homocedasticidad: con el gráfico de diagnóstico de un modelo lineal general se determinará la homocedasticidad.
+m1 <- lm(Salar$Prop_Mort ~ Salar$Dieta)
+anova(m1) %>% kable(digits = 3)
 
-3) Normalidad: en el histograma de porcetaje de mortalidad se observa que su distribución no es normal, ya que tiene distribución hacia la derecha. También se evaluará con el gráfico de un modelo lineal general. 
-
-A continuación, en Figura 5 se muestran los gráficos de diagnóstico de un modelo lineal generados para evaluar la homocedasticidad y normalidad de los residuos.  
-
-```{r Gráficos de evaluación de los supuestos, echo=TRUE}
-
-# Gráfico de diagnóstico de un modelo lineal para evaluar la homocedasticidad y normalidad de los residuos
-m1 = lm(Salar$Prop_Mort ~ Salar$Dieta)
 plot(m1)
 
 ```
 
+**1) Independencia:** se evalúa con gráfico de residuales y test de Durbin-Watson
 
-Figura 5. En el gráfico de Residuals vs Fitted se evalúa la homocedasticidad, donde la línea roja muestra el promedio de los valores. En este gráfico, se observa aumento de los valores ajustados hacia la derecha mientras aumenta la dispersión de los residuales indicando que no hay homocedasticidad. En el gráfico de cuantil-cuantil (Normal Q-Q) se determina si se cumple el supuesto de normalidad. La línea diagonal puntiada indica los cuantiles teóricos en la distribución normal. En este segundo gráfico se observa que la distribución de los residuos se desvía de la distribución normal teórica, debido a que los residuos se apartan de la diagonal.
 
-Estos gráficos de diagnóstico de homocedasticidad y normalidad muestran que no se cumplen ambos supuestos. Por lo tanto, un modelo lineal con distribución normal no es adecuado para analizar la proporción de la mortalidad en función de la dieta. Se realizará un modelo lineal generalizado.
+```{r Independencia con gráfico de análisis de residuales, echo=TRUE}
+
+plot(m1$residuals, pch=20, col = "blue",
+cex.lab=1.25, cex.axis=1.25)
+
+```
+
+
+
+```{r Independencia con Prueba de Durbin-Watson, echo=TRUE}
+
+#H0: Son independientes o no existe autocorrelación.
+#HA: No son independientes y existe autocorrelación.
+
+dwtest(Prop_Mort ~ Dieta, data = Salar,
+alternative = c("two.sided"),
+iterations = 15)
+
+```
+
+**2) Homocedasticidad:** se usa gráfico de residuales vesus ajustado de un modelo lineal y Prueba de Levene.
+
+Figura 6. En el gráfico de Residuals vs Fitted se evalúa la homocedasticidad, donde la línea roja muestra el promedio de los valores. En este gráfico, se observa aumento de los valores ajustados hacia la derecha mientras aumenta la dispersión de los residuales indicando que no hay homocedasticidad. 
+
+```{r Homogeneidad de varianzas con gráfico de análisis de residuales, echo=TRUE}
+
+plot(m1, 1, pch=20, col = "blue")
+
+
+```
+```{r Homogeneidad de varianza con Prueba de Levene}
+
+lv <- leveneTest(Prop_Mort ~ Dieta, data = Salar,
+           center = "median")
+
+lv %>% kable(digits = 3, caption = "Homogenecidad con Prueba de Levene")
+
+```
+
+**3) Normalidad:** se evalúa con análisis de residuales de un  lineal general. 
+
+Figura 7. En el gráfico de abajo se determina si se cumple el supuesto de normalidad. La línea diagonal de color azul indica los cuantiles teóricos en la distribución normal. En este segundo gráfico se observa que la distribución de los residuos se desvía de la distribución normal teórica, debido a que los residuos se apartan de la diagonal.
+
+```{r Normalidad con gráfico de análisis de residuales, echo=TRUE}
+
+qqPlot(m1) 
+
+```
+
+
+Se realizaron las evaluaciones de los principales tres supuestos, dándo como resultados que solo se cumple el supuesto de independencia y no se cumplen los supuestos de homogenecidad de varianzas y distribución normal. Por lo tanto, un modelo lineal con distribución normal no es adecuado para analizar la proporción de la mortalidad en función de la dieta. Se realizará un modelo lineal generalizado.
+
 
 
 **3.** **Hipótesis:**

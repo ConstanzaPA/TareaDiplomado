@@ -36,7 +36,7 @@ library(car)
 
 **Descripción del problema a resolver:** 
 
-Completar introducción
+Han surgido dietas especiales y funcionales que atacan los principales problemas sanitarios que afectan a los peces, e incluso alternativas que ayudan a los ejemplares a recuperarse tras los blooms de algas en centros de cultivo en agua mar. 
 
 Debido a su impacto en la salud de Salmón del Atlántico, es importante evaluar la influencia de la dieta en la mortalidad en los centros de cultivo en agua de mar.
 
@@ -73,15 +73,15 @@ summary(Salar)
 #Observar el comportamiento de las variables en estudio usando histogramas y boxplot (valor atípico se muestra en punto de color rojo):
 
 hist_ing <- ggplot(Salar,aes(Ingreso))+
-  geom_histogram(fill="lightblue",color="black",bins=10)+
+  geom_histogram(fill="lightblue",color="darkblue",bins=10)+
   labs(title = "Número de peces ingresados")
 
 hist_peso <- ggplot(Salar,aes(Peso_cosecha))+
-  geom_histogram(fill="lightblue",color="black",bins=8)+
+  geom_histogram(fill="lightblue",color="darkblue",bins=8)+
   labs(title = "Peso promedio de cosecha")
 
 hist_mort <- ggplot(Salar,aes(Prop_Mort))+
-  geom_histogram(fill="lightblue",color="black",bins=10)+
+  geom_histogram(fill="lightblue",color="darkblue",bins=10)+
   labs(title = "Prop. de mortalidad")
 
 grid.arrange(hist_ing, hist_peso, hist_mort, ncol=1, nrow =3)
@@ -109,72 +109,48 @@ grid.arrange(bi, bp, bm, ncol=1, nrow =3)
 
 **1.** **Descripción de la variación de las variables:**
 
-3) Diagrama de caja y bigotes de las variables por factor Dieta: solo difieren las medianas de la proporción de la mortalidad según el tipo de dieta
+3) Diagrama de caja y bigotes de las variables por factor Dieta: solo difiere la proporción de la mortalidad según el tipo de dieta
 
 ```{r Boxplot variables por tipo de Dieta ,warning=FALSE, message=FALSE, out.width = '70%', fig.align='center'}
 
-blot_ing <- ggplot(Salar,aes(y=Ingreso,x=Dieta))+
-  geom_boxplot(fill="lightblue",outlier.colour = "red")+
-  labs(y="Ingreso",x="Tipo de Dieta")
+blot_ing <- ggplot(Salar,aes(y=Ingreso,x=Dieta, color=Dieta))+
+  geom_boxplot()+theme(legend.position="none")
 
-blot_peso <- ggplot(Salar,aes(y=Peso_cosecha,x=Dieta))+
-  geom_boxplot(fill="lightblue",outlier.colour = "red")+
-  labs(y="Peso cosecha",x="Tipo de Dieta")
+blot_peso <- ggplot(Salar,aes(y=Peso_cosecha,x=Dieta, color=Dieta))+
+  geom_boxplot()+theme(legend.position="none")
 
-blot_mort <- ggplot(Salar,aes(y=Prop_Mort,x=Dieta))+
-  geom_boxplot(fill="lightblue",outlier.colour = "red")+
-  labs(y="Proporción de mortalidad",x="Tipo de Dieta")
+blot_mort <- ggplot(Salar,aes(y=Prop_Mort,x=Dieta, color=Dieta))+
+  geom_boxplot()+theme(legend.position="none")
 
 grid.arrange(blot_ing, blot_peso, blot_mort, ncol=1, nrow =3)
 
 ```
 
-
-## Análisis exploratorio de los datos
-
-**2.** **Determinar la relación entre variables y factores:**
-
-1) Gráficos de interacción:
-
-```{r Gráficos blot interacción ,warning=FALSE, message=FALSE, out.width = '70%', fig.align='center'}
-#Establecer relación entre variables cuantitativas y factores usando gráficas de correlación, boxplot, interacción o de tamaño de los efectos:
-
-ip1 <- interaction.plot(Salar$Unidad,Salar$Dieta, Salar$Peso_cosecha,trace.label="Dieta",fun=mean, xlab="Unidad",ylab="Peso cosecha",type="b", col= c("black", "blue"),pch=c(19,17))
- 
-ip2 <- interaction.plot(Salar$Unidad,Salar$Dieta, Salar$Prop_Mort,trace.label="Dieta",fun=mean,xlab="Unidad",ylab="Proporción de mortalidad",type="b", col= c("black", "blue"),pch=c(19,17))
-
-id1 <- plot.design(Salar$Peso_cosecha~Salar$Unidad*Salar$Dieta,xlab="Factores", ylab="Peso cosecha")
- 
-id2 <- plot.design(Salar$Prop_Mort~Salar$Unidad*Salar$Dieta,xlab="Factores", ylab="Proporción de  mortalidad")
-
-```
-
-
 ## Evaluación de los supuestos
 
-Se determinan los siguientes supuestos para los residuales de proporción de la mortalidad:
+Se evalua los siguientes 3 supuestos:
 
-1) **Independencia de las varibales:** si se cumple (observaciones de jaulas independientes).
+1) **Independencia de las varibales:** si se cumple (gráfico de residuales y test de Durbin-Watson)
 
-2) **Homocedasticidad:** no se cumple (gráfico de residuales versus ajustados en un modelo linea).
+2) **Homocedasticidad:** no se cumple (gráfico de residuales versus ajustados y Prueba de Levene)
 
-3) **Normalidad:** no se cumple (histograma y gráfico de cuantil-cuantil en un modelo lineal. 
+3) **Normalidad:** no se cumple (análisis de residuales de un  lineal general) 
 
 
 ## Hipótesis
 
-- **Hipótesis nula (H0):** ausencia de relación entre la dieta y la proporción de la mortalidad del Salmón del Atlántico. 
+- **Hipótesis nula (H0):** la dieta no tiene relación con la proporción de la mortalidad del Salmón del Atlántico.. 
 
-- **Hipotesis alternativa (H1):** existencia de relación entre la dieta y la proporción de la mortalidad. 
+- **Hipotesis alternativa (H1):** la dieta si tiene relación con la proporción de la mortalidad.
 
 
 ## Prueba de hipótesis
 
-1) Modelo lineal generalizado con Binomial:
+Resultado del modelo lineal generalizado con Binomial:
 
-**1.** **Hipotesis nula (H0):** se rechaza considerando solo el modelo nulo (distribución binomial)
+**Hipotesis nula (H0):** se rechaza considerando solo el modelo nulo (distribución binomial)
 
-**1.** **Hipotesis nula (H0):** se acepta la hipótesis alternativa, aunque se requiere de otra u otras variables predictoras además de la dieta para poder explicar la proporción de la mortalidad.
+**Hipotesis nula (H0):** se acepta la hipótesis alternativa, aunque se requiere de otra u otras variables predictoras además de la dieta para poder explicar la proporción de la mortalidad.
 
 
 ## Conclusión
