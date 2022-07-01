@@ -36,9 +36,9 @@ library(car)
 
 **Descripción del problema a resolver:** 
 
-Han surgido dietas especiales y funcionales que atacan los principales problemas sanitarios que afectan a los peces, e incluso alternativas que ayudan a los ejemplares a recuperarse tras los blooms de algas en centros de cultivo en agua mar. 
+Han surgido dietas especiales y funcionales que atacan los principales problemas sanitarios que afectan a los peces, e incluso alternativas que ayudan a los ejemplares a recuperarse tras los blooms de algas en centros de cultivo en agua mar [^1]. Debido a su impacto en la salud de Salmón del Atlántico, es importante evaluar la relación de la dieta en la mortalidad en los centros de cultivo en agua de mar.
 
-Debido a su impacto en la salud de Salmón del Atlántico, es importante evaluar la influencia de la dieta en la mortalidad en los centros de cultivo en agua de mar.
+[^1]: AQUA. Nutrición: Las súper dietas para el cultivo del salmón. https://www.aqua.cl/reportajes/nutricion-las-super-dietas-cultivo-salmon/
 
 **Objetivo:** 
 
@@ -134,7 +134,7 @@ Se evalua los siguientes 3 supuestos:
 
 2) **Homocedasticidad:** no se cumple (gráfico de residuales versus ajustados y Prueba de Levene)
 
-3) **Normalidad:** no se cumple (análisis de residuales de un  lineal general) 
+3) **Normalidad:** no se cumple (análisis de residuales de un modelo lineal) 
 
 
 ## Hipótesis

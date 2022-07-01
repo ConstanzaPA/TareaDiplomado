@@ -1,5 +1,5 @@
 ---
-title: "Evaluación de la dieta en la sobrevivencia del Salmón del Atlántico"
+title: "Evaluación de la dieta en la mortalidad del Salmón del Atlántico"
 author: "Constanza Pino Ajenjo"
 date: "`r Sys.Date()`"
 output: html_document
@@ -29,7 +29,9 @@ library(stats4)
 
 **1.** **Descripción del problema a resolver:** 
 
-Debido a su impacto en la salud de Salmón del Atlántico, es importante analizar la influencia de la dieta en la mortalidad en los centros de cultivo en agua de mar.
+Han surgido dietas especiales y funcionales que atacan los principales problemas sanitarios que afectan a los peces, e incluso alternativas que ayudan a los ejemplares a recuperarse tras los blooms de algas en centros de cultivo en agua mar [^1]. Debido a su impacto en la salud de Salmón del Atlántico, es importante evaluar la relación de la dieta en la mortalidad en los centros de cultivo en agua de mar.
+
+[^1]: AQUA. Nutrición: Las súper dietas para el cultivo del salmón. https://www.aqua.cl/reportajes/nutricion-las-super-dietas-cultivo-salmon/
 
 
 **2.** **Datos analizados:** 
