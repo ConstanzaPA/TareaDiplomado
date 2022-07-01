@@ -178,8 +178,6 @@ Se evalúa si se cumplen los tres supuestos con los siguientes métodos basados 
 m1 <- lm(Salar$Prop_Mort ~ Salar$Dieta)
 anova(m1) %>% kable(digits = 3)
 
-plot(m1)
-
 ```
 
 **1) Independencia:** se evalúa con gráfico de residuales y test de Durbin-Watson
