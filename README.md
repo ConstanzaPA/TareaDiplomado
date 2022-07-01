@@ -19,6 +19,7 @@ Se analiza los resultados de las siguientes variables observadas en 186 jaulas (
 
 ## Resumen de los métodos estadísticos aplicados:**
 
+- Estadística descriptiva
 - Análisis de residuales en un modelo lineal
 - Test de Durbin-Watson
 - Prueba de Levene
