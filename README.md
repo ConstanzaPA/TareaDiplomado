@@ -17,7 +17,7 @@ Se analiza los resultados de las siguientes variables observadas en 186 jaulas (
 - porcentaje de mortalidad (Mortalidad) 
  
 
-## Resumen de los métodos estadísticos aplicados:**
+### Resumen de los métodos estadísticos aplicados:
 
 - Estadística descriptiva
 - Análisis de residuales en un modelo lineal
